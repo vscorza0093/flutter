@@ -1,4 +1,4 @@
-# flutter
+# Desenvolvimento com Dart utilizando o Kit de Desenvolvimento de Interface - Flutter
 ### Bootcamp Santander 2023 em parceria com DIO
 
 
