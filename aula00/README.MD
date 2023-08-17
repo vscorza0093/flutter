@@ -24,6 +24,10 @@ Emuladores Android Studio.........................
 Parte 3
 
 Primeiro projeto Flutter..........................
+Estrutura do Projeto Flutter......................
+Introdução à estrutura de código..................
+Executando projeto Flutter pelo VSCode............
+
 
 
 O objetivo desta trilha é abordar Flutter e DART
@@ -228,7 +232,6 @@ pubspec.lock - Arquivo fechado que contém as versões, pacotes e outras depend�
 
 pubspec.yaml - Configurações da aplicação Flutter. Onde armazenamos imagens, fontes, pacotes específicos e outros configurações. Dentro do arquivo podemos encontrar exemplos de utilização do arquivo.
 
-
 ### Introdução à estrutura de código
 
 A função `main()` está utilizando a função `runApp()` passando uma instância da classe do nosso aplicativo `MyApp` como parâmetro.
@@ -249,7 +252,6 @@ A classe MyHomePage representa a nossa página inicial, que é a única na aplic
 Neste mesmo arquivo podemos encontrar o método `build()` que é de fato o método que executa a renderização da página.
 
 Ele possui um `Scaffold`, que é um Widget que entregará uma página base que conterá um AppBar com informações padrões, um Body pré-configurado, columns com alinhamentos e textos pré-definidos e botões utilizáveis.
-
 
 
 ### Executando projeto Flutter pelo VSCode
