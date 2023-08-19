@@ -4,6 +4,8 @@ Instrutor Danilo Perez
 
 Canal "Fala Devs" no `youtube`
 
+O projeto desta aula está na pasta `dioapp`.
+
 ``` 
 Parte 1
 
