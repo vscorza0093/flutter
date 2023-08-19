@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Clica até 2048',
+      title: '2048',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,11 +28,11 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 123, 123)),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 255, 123, 123)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Clica até 2048'),
+      home: const MyHomePage(title: 'Clique até 2048'),
     );
   }
 }
@@ -65,9 +65,13 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      if (_counter < 2048) {
-        _counter = _counter * 2;
-      }
+      _counter = _counter * 2;
+    });
+  }
+
+  void _resetCounter() {
+    setState(() {
+      _counter = 1;
     });
   }
 
@@ -110,33 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
-                'Clica até 2048',
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add_alert),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.amber,
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'CHEGOOOUUUU!!',
+                'Clique até 2048',
               ),
               Text(
                 '$_counter',
@@ -151,13 +129,33 @@ class _MyHomePageState extends State<MyHomePage> {
           child: const Icon(Icons.add),
         ), // This trailing comma makes auto-formatting nicer for build methods.
       );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.amber,
+          title: Text(widget.title),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'CHEGOOOUUUU!!',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+            onPressed: _resetCounter,
+            tooltip: 'Increment',
+            child: const Icon(Icons
+                .circle_outlined)), // This trailing comma makes auto-formatting nicer for build methods.
+      );
     }
-  }
-
-  String _Text() {
-    if (_counter != 2048)
-      return "Diferente de 2048";
-    else
-      return "Chegou em 2048";
   }
 }

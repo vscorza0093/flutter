@@ -264,6 +264,17 @@ Após baixar todos os pacotes e carregar todas as dependÊncias, o projeto abrir
 
 Graças ao Hot Reload, modo do Dart que usaremos no VSCode, toda alteração feita no código já irá atualizar automaticamente a nossa aplicação, sem recarregar todo o conteúdo e nos levar de volta para a página inicial.
 
+Este é um framework muito versátil e podemos manipular todas as cores, características das fontes, ícones e muitos outros elementos, de maneira simples e intuitiva, por exemplo:
+
+mudar isso:
+```dart
+child: const Icon(Icons.add),
+```
+
+para:
+```dart
+child: const Icon(Icons.add_alert),
+```
 
 
 
@@ -279,3 +290,4 @@ Certificações
 
 https://www.dio.me/certificate/4DEA7C50/share
 https://www.dio.me/certificate/FA519B2A/share
+https://www.dio.me/certificate/88E6C0FE/share
