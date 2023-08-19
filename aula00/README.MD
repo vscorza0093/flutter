@@ -294,8 +294,9 @@ Bibliografia
 [1] https://docs.flutter.dev/get-started/install/windows
 
 
-Certificações
-
+Certificações deste curso
+```
 https://www.dio.me/certificate/4DEA7C50/share
 https://www.dio.me/certificate/FA519B2A/share
 https://www.dio.me/certificate/88E6C0FE/share
+```
