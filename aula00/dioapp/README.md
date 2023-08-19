@@ -6,5 +6,5 @@ Esse projeto está utilizando o template inicial do Flutter, com algumas pequena
 
 O objetivo é clicar até que o contador chegue em 2048, após isso, é possível reiniciar o contador.
 
-![phone 1](https://imgur.com/a/gA7GEOp)
+![phone 1](https://ibb.co/Vj6rn53)
 ![phone 2](https://imgur.com/a/GpH1lQ7)
