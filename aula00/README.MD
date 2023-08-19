@@ -4,6 +4,7 @@ Instrutor Danilo Perez
 
 Canal "Fala Devs" no `youtube`
 
+``` 
 Parte 1
 
 Arquitetura do Flutter............................
@@ -27,7 +28,7 @@ Primeiro projeto Flutter..........................
 Estrutura do Projeto Flutter......................
 Introdução à estrutura de código..................
 Executando projeto Flutter pelo VSCode............
-
+```
 
 
 O objetivo desta trilha é abordar Flutter e DART
