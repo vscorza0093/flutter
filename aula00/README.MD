@@ -267,7 +267,7 @@ Graças ao Hot Reload, modo do Dart que usaremos no VSCode, toda alteração fei
 
 Este é um framework muito versátil e podemos manipular todas as cores, características das fontes, ícones e muitos outros elementos, de maneira simples e intuitiva, por exemplo:
 
-mudar isso:
+mudar este código:
 ```dart
 child: const Icon(Icons.add),
 ```
@@ -276,6 +276,13 @@ para:
 ```dart
 child: const Icon(Icons.add_alert),
 ```
+
+Existe uma variedade imensa de ícones para serem utilizados, podemos acessar cores via ARGB, então a estilização é praticamente infinita
+
+
+
+
+
 
 
 
