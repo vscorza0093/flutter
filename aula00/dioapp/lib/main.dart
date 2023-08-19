@@ -152,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: _resetCounter,
-            tooltip: 'Increment',
+            tooltip: 'Reset',
             child: const Icon(Icons
                 .circle_outlined)), // This trailing comma makes auto-formatting nicer for build methods.
       );
