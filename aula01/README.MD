@@ -27,10 +27,16 @@ input do usuário................................
 Parte 2 - Funções
 
 Funções Recursivas..............................
+Parâmetros Opcionais............................
 Arrow Functions.................................
+
+Parte 3 - Orientação a Objetos
+
 ```
 
-## Introdução
+## Fundamentos do Dart
+
+### Introdução
 
 Dart foi criada em 2011, com objetivo de ser um Transpilador, como alternativa ao desenvolvimento Web utilizando Type Script, ou seja, o Dart também era compilado para Java Script, no final das contas.
 
@@ -431,15 +437,91 @@ void recursivity(int number, int counter) {
 }
 ```
 
+### Parâmetros Opcionais
+
+Para tornarmos opcional um parâmetro de uma função, colocamos ele entre chaves `{}` e `?` no tipo da variável, no momento em que estamos declarando a função.
+
+```dart
+void printName(String firstname, {String? lastname}) {
+}
+```
+
+A partir do momento que um parâmetro é tratado como opcional, não podemos passar um valor para esse parâmetro da forma convencional, então, ao invés de escrevermos:
+
+```dart
+printName("Vinicius", "Scorza"); // Esse código irá gerar um erro
+```
+
+devemos escrever:
+
+```dart
+printName("Vinicius", lastname: "Scorza");
+```
+
+Também podemos definir valores padrões, evitando a utilização de valor anulável
+
+```dart
+void printName(String firstname, {String lastname = ""}){
+}
+```
+
 ### Arrow Functions
 
 Arrow functions são uma simplificação das funções comuns, que conseguimos obter quando temos uma função de apenas uma linha.
 
+Arrow function já consegue reconhecer quando estamos retornando valores e quando estamos apenas printando
+
+Apesar de ser um exemplo muito grande, utilizarei por já estar escrita e funcionando
+
+```dart
+void printName(String name, {String? lastname}) => (lastname != null ? print("$name $lastname") : print(name));
+```
+
+O Dart trabalha com tipagem dinâmica, então podemos ocultar o tipo da função, seja void ou uma função que retorna algum valor.
+
+```dart
+void main(List<String> arguments) {
+  print(implicitType(5, 10));
+}
+
+implicitType(int num1, int num2) => num1 + num2;
+```
+
+Essa é uma característica da linguagem Dart e não se aplica apenas para Arrow Functions.
 
 
 
+## Orientação a Objetos
+
+### Princípios da Orientação a Objetos
+
+[*] Classes 
+[*] Objetos
+[*] Herança
+[*] Encapsulamento
+[*] Polimorfismo
+[*] Classes Abstratas
+[*] Interfaces
+[*] Inversão de Controle e Injeção de dependência
+[*] SOLID
+[*] DDD - Domain Driven Design
+
+Classes Abstratas - Classes que não podem ser instanciadas, geralmente utilizadas como modelos
+
+Interfaces - Diferente de classes, interfaces são contratos que assinam métodos que devem ser implementados pelas classes que desejam usá-los
+
+Inversão de Controle - É a ideia de que tudo que a nossa classe precisa instanciar venha diretamente do construtor
+
+Injeção de dependência - Passar todas as necessidades de uma instância de classe para o seu construtor
+
+Encapsulamento - É uma forma de "esconder" propriedades de uma classe de uma nova instância 
+
+Polimorfismo - Várias formas para uma coisa só. Métodos que foram herdados e sobreescritos, por exemplo
+
+DDD - É uma filosofia de desenvolvimento de software que prega a separação do nosso sistema em domínios
 
 
+### 
 
 
 
@@ -453,3 +535,4 @@ Certificações
 
 https://www.dio.me/certificate/AF3226E4/share
 https://www.dio.me/certificate/11E9F9FD/share
+https://www.dio.me/certificate/5BA26F79/share
