@@ -32,6 +32,16 @@ Arrow Functions.................................
 
 Parte 3 - Orientação a Objetos
 
+Classe e Objeto.................................
+Encapsulamento (get & set)......................
+.......Underscore...............................
+Override e Polimorfismo.........................
+Construtor......................................
+Herança.........................................
+Classes Abstratas...............................
+Enumerators.....................................
+Interface.......................................
+
 ```
 
 ## Fundamentos do Dart
@@ -521,7 +531,146 @@ Polimorfismo - Várias formas para uma coisa só. Métodos que foram herdados e 
 DDD - É uma filosofia de desenvolvimento de software que prega a separação do nosso sistema em domínios
 
 
-### 
+### Classe e Objeto
+
+Para criar uma classe utilizamos a palavra reservada `class`.
+
+Para instanciar um objeto da classe não é obrigatório o uso da palavra reservada `new`, isso fica a critério de quem está desenvolvendo.
+
+A classe de mais alto nível em Dart é `Object`, então se criarmos uma classe Pessoa() completamente vazia, instanciarmos ela no nosso main e printarmos essa classe, teremos como retorno o resultado `Instance of 'Pessoa'`
+
+
+### Encapsulamento (get & set)
+
+Ao criarmos uma propriedade em uma classe, devemos sempre inicializá-la com algum valor.
+
+A partir da versão 2.13 do Dart, adotou-se o padrão `null safety`, onde propriedades só aceitarão valores nulos se essa possibilidade for explicitamente indicada.
+
+```dart
+class Pessoa {
+  String name;      // Esse código gera um erro
+  String name = ""; // Esse código está correto
+  String? name;     // Esse código também está correto
+}
+```
+
+Manipular propriedades das classes diretamente através do objeto instanciado fere os princípios da orientação a objetos, por isso é importante criar métodos Get e Set para lidar com esse tipo de situação.
+
+```dart
+class Pessoa {
+  void setNome(String name) => this.name = name;
+}
+```
+
+#### underscore
+
+Podemos evitar o uso da palavra reservada `this` utilizando nomes de variáveis diferentes, mas nesse caso é mais aconselhável utilizar a palavra chave `this`, porém, se quisermos tratar uma propriedade como privada (o que é o correto na Orientação a Objetos para proteger nossa classe através do encapsulamento), podemos utilizar o `_`(underscore) antes do nome da propriedade. Assim, ela só poderá ser acessada dentro da classe onde ela está contida e pode ser tratada como nome exclusivo dentro da sua classe.
+
+Agora, para acessarmos as propriedades da nossa classe, criamos métodos Get
+
+```dart
+class Pessoa {
+  void setNome(String name) => _name = name;
+
+  String getNome() => return _name;
+}
+```
+
+
+### Override e Polimorfismo
+
+Na orientação a objetos é possível sobreescrever métodos existentes em alguma classe. Esse é um artifício muito útil que nos possibilita criar um método que pode ser sobreescrito da maneira que for necessária por diversas classes.
+
+Por exemplo, vamos reescrever o método `toString()`, que é um método padrão da classe Objects, que é a classe base para todas as outras classes. Para isso, devemos utilizar a anotação `@override`
+
+```dart
+class Pessoa {
+
+  @override
+  String toString() {
+    return {
+      "Nome": _name,
+      "Endereço": _address,
+    }.toString();
+  }
+}
+```
+
+Neste caso estamos manipulando um Map, transformando esse Map em uma String e usando de valor de retorno da nossa função que foi sobreescrita.
+
+Isso já acaba se mesclando com um conceito de polimorfismo, pois temos um método padrão que está implementando em uma classe padrão, mas que agora foi sobreescrito e transformado em um método com o mesmo nome, mas com um comportamento próprio.
+
+
+### construtores
+
+Métodos construtores são métodos que, se implementados, ditam a forma como uma classe deve ser intanciada. 
+
+Se esse método construtor recebe parâmetros, esses parâmetros deverão ser passados no momento em que criarmos uma instância da classe
+
+Funciona como em qualquer outra linguagem de programação
+
+
+### Herança
+
+Herança é quando uma classe herda informações de outra classe a partir deste momento recebe suas propriedades e métodos
+
+Para que uma classe herde de outra classe utilizamos a palavra reservada `extends` seguida do nome da classe que queremos herdar
+
+```dart
+class PessoaFisica extends Pessoa {
+
+
+}
+```
+
+A partir daí, podemos remover propriedades e métodos da sub-classe, que também estão contidos na super-classe.
+
+Para acessarmos esses métodos e propriedades contidos na classe herdada, deveremos utilizar a palavra reservada `super` da seguinte forma
+
+```dart 
+class PessoaFisica extends Pessoa {
+
+  PessoaFisica(String name, String address, String registerNumber) : super(name, address, registerNumber);
+}
+```
+
+Todas as propriedades contidas na classe herdada, devem estar entre os parênteses da chamada `super`, propriedades adicionadas na classe que está herdando não devem estar no parêntese da chamada `super`
+
+É importante ressaltar que os métodos sobreescritos são importantes para garantir a singularidade de cada classe, caso seja necessário.
+
+Herança é uma característica muito útil da Orientação a Objetos, que nos poupa muito tempo e muitas linhas, evitando códigos duplicados e trazendo excelente flexibilidade e acessibilidade de códigos.
+
+
+### Classes Abstratas
+
+Se pensarmos de uma forma mais correta, não faz sentido instanciarmos uma classe do tipo `Pessoa`, essa pessoa será sempre `Pessoa Física` ou `Pessoa Jurídica`, utilizando o conceito de Classes Abstratas podemos criar exatamente a mesma situação, mas sem permitir que a classe `Pessoa` seja instanciável. 
+
+Dessa forma, teremos uma classe principal, que serve apenas como modelo para as classes que irão herdar dela
+
+Para que essa classe passe a ser uma classe abstrata, devemos utilizar a palavra reservada `abstract` antes da palavra reservada `class`
+
+```dart
+abstract class Pessoa {
+
+}
+```
+
+A partir deste momento, nossa classe principal já não pode mais ser instanciada e se tentarmos iremos obter um erro, mas as classes que estão herdando da nossa classe principal continuam funcionando normalmente.
+
+
+### Enumerators
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
