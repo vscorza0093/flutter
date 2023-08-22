@@ -1,6 +1,35 @@
 # Fundamentos da Linguagem Dart
 
 
+```
+Parte 1 - Fundamentos do Dart
+
+Introdução......................................
+Criação de projetos Dart........................
+Estrutura do Dart...............................
+Operadores e Funções............................
+Orientação a Objetos............................
+Exceções........................................
+Tipos de dados..................................
+Declaração de alguns tipos......................
+Int.............................................
+Double..........................................
+String..........................................
+List............................................
+Map.............................................
+Constantes......................................
+Dynamic.........................................
+DateTime........................................
+if ternário.....................................
+switch case.....................................
+input do usuário................................
+
+Parte 2 - Funções
+
+Funções Recursivas..............................
+Arrow Functions.................................
+```
+
 ## Introdução
 
 Dart foi criada em 2011, com objetivo de ser um Transpilador, como alternativa ao desenvolvimento Web utilizando Type Script, ou seja, o Dart também era compilado para Java Script, no final das contas.
@@ -44,7 +73,7 @@ Se tentarmos executar nossa aplicação a partir de um arquivo que não contenha
 
 agora podemos executar nossa aplicação a partir de qualquer pasta.
 
-### Estrutura de diretórios
+### Estrutura do Dart
 
 A estrutura é basicamente a mesma que vimos na introdução ao Flutter, já que o Dart é a linguagem de programação utilizada no SDK.
 
@@ -90,11 +119,6 @@ try {
     print ("Erro: $e");
 }
 ```
-
-
-
-## Tipos de dados e declaração de variáveis
-
 
 ### Tipos de dados
 
@@ -296,8 +320,9 @@ Isso ocorre porque a variável só receberá aquele tipo em tempo de execução,
 
 ```dart
 DateTime data1 = DateTime.now();
-data1 = DateTime.parse("2023-08-21 00:00:00);
+data1 = DateTime.parse("2023-08-21 00:00:00");
 ```
+
 O tipo DateTime armazena dias, horas, timezone, pode ser instanciada através do `var`, utilizando `const`.
 
 Podemos utilizar parse e tryParse, buscando por conversões válidas de String para DateTime.
@@ -311,7 +336,104 @@ Podemos adicionar ou subtrair datas.
 Podemos verificar se determinada data vem antes ou depois de outra data.
 
 
+### If ternário
 
+O if ternário, em algumas situações, é uma excelente alternativa ao if padrão e podemos inicializar uma variável que receberá o conteúdo de uma das duas condições, que pode ser um objeto de qualquer tipo, vindo diretamente do resultado da condição ou através do retorno de uma função chamada ao concluir a verificação condicional.
+
+O if ternário nos possibilita uma diversificação bastante interessante e vale o aprofundamento
+
+```dart
+void main(List<String> arguments) {
+  int number1 = Random().nextInt(11);
+  int number2 = Random().nextInt(11);
+  print("Num1: $number1\nNum2: $number2\n");
+
+  var firstround = (number1 > 6) ? number1 + getNum() : number1;
+  var secondround =
+      (number2 > 6) ? number2 + getNum() : transformInFive(number2);
+  var finalScore = firstround + secondround;
+  String finalresult = (finalScore > 15) ? "Vitória" : "Derrota";
+
+  print("$finalScore pontos");
+  print(finalresult);
+}
+
+int getNum() {
+  return Random().nextInt(6);
+}
+
+// i d k
+int transformInFive(int number) {
+  int dif = 6 - number;
+  int six = number + dif;
+  return six - 1;
+}
+```
+
+
+### Input do usuário
+
+Para ler um input do usuário utilizaremos o método readLineSync() da classe `stdin`
+
+Para isso, devemos import `dart:io`
+
+```dart
+import 'dart:io';
+```
+
+Em seguida, podemos atribuir o resultado do metodo readLineSync() a uma variável, usando, de maneira opcional, a condificação utf8
+
+```dart
+import 'dart:io';
+
+var userInput = stdin.readLineSync(encoding: utf8);
+```
+
+
+### Switch case
+
+Declaramos o switch case da seguinte forma: 
+
+```dart
+switch (num) {
+    case 1:
+        print(1);
+        break;
+    case 2:
+        print(22222);
+        break;
+    default;
+}
+```
+
+
+## Funções
+
+### Funções recursivas
+
+Uma função recursiva, basicamente, é uma função que chama a ela mesma em loop. 
+
+Para que a recursividade pare, é necessário que se defina alguma condição dentro da própria função.
+
+Apesar de ter um conceito bastante simples, este é um assunto que precisa ser tratado com cuidado, qualquer função recursiva pode acabar em um loop infinito.
+
+```dart
+void recursivity(int number, int counter) {
+  int result = number * number;
+  print(number);
+  print(counter);
+  if (counter != 1) {
+    counter -= 1;
+    recursivity(result, counter);
+  } else {
+    print(result);
+  }
+}
+```
+
+### Arrow Functions
+
+Arrow functions são uma simplificação das funções comuns, que conseguimos obter quando temos uma função de apenas uma linha.
 
 
 
@@ -327,6 +449,7 @@ Bibliografia
 [2] https://mrale.ph/dartvm/
 
 
-Certificação
+Certificações
 
 https://www.dio.me/certificate/AF3226E4/share
+https://www.dio.me/certificate/11E9F9FD/share

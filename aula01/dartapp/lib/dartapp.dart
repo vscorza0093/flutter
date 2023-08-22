@@ -6,8 +6,8 @@ int calculate() {
 
   var1 = [10, true, "A"];
   print(var1);
-  var1.add("Dart", 100.000);
-  print(var1);
+//  var1.add("Dart", 100.000);
+//  print(var1);
 
   return 6 * 7;
 }
