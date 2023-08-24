@@ -660,16 +660,124 @@ A partir deste momento, nossa classe principal já não pode mais ser instanciad
 
 ### Enumerators
 
+Enumerator é um tipo especial de classes usados para representar um número fixo de determinado valor. 
 
+[3]Todos os enums automaticamente extendem da classe Enum. Eles também são selados `sealed`, o que significa que não podemos criar subclasses que extendem dos enums e não podem ser misturados ou instanciados explicitamente de outra forma.
 
+Classes abstratas podem implementar explicitamente ou extender de Enum, mas a menos que a classe seja então implementada em uma declaração de enum, nenhum objeto poderá realmente implementar o tipo dessa classe.
 
+No exemplo a seguir estaremos criando um sistema de notificações para ações do usuário
 
+```dart
+enum SysNotification {
+  sms,
+  pushNotification,
+  email,
+  none,
+}
+```
 
+Caso adicionemos o enum em nosso construtor, em seguida devemos alterar a estrutura da nossa classe `Pessoa` e de todas as classes que extendem dela, adicionando nosso enum ao construtor de cada classe.
 
+Em seguida, podemos alterar a inicialização do nosso objeto, adicionando o tipo de notificação desejada
 
+```dart
+void main(List<String> arguments) {
+  var pf = PessoaFisica(
+      "Vinicius", "Scorza", "Av 2", "12345678900", SysNotification.email);
+}
+```
 
+O enumerator vai nos ajudar a tomar decisões baseadas em tipos, é muito melhor trabalhar com um cenário onde nós conhecemos os tipos possíveis do que trabalhar em um campo aberto onde permitimos que o usuário defina o que quiser. Dessa forma, cercamos e evitamos as falhas e ajudamos a tomada de decisões dentro do desenvolvimento do sistema.
 
+Então podemos, no construtor de cada classe que extende da nossa classe principal, pré-definir a forma de inicialização do nosso enum, evitando a utilização de `nullable` e evitando inserções erradas do usuário.
 
+Dentro do construtor da nossa classe principal, envolveremos nosso enum em `{}` (chaves), tornando-o um argumento opcional e aplicaremos um valor padrão para que não haja nenhum problema.
+
+```dart
+  Pessoa(String name, String? address, String registerNumber, {SysNotification sysNotification = SysNotification.none}) {
+    _name = name;
+    _address = address;
+    _registerNumber = registerNumber;
+    _sysNotification = sysNotification;
+  }
+```
+
+As classes que estão extendendo nossa classe principal também sofrerão alterações em seus construtores:
+
+```dart 
+  PessoaJuridica(String name, String address, String registerNumber, {SysNotification sysNotification = SysNotification.none}): super(name, address, registerNumber, sysNotification: sysNotification);
+```
+
+Nosso enum, dentro dos parâmetros vindos de super ficou dessa forma `sysNotification: sysNotification`
+
+Se quisermos alterar este valor no momento da inicialização do nosso objeto, a declaração será explícita, com o uso dos dos pontos antes da variável, da seguinte forma
+
+```dart
+  var pj = PessoaJuridica("Empresa1", "Rua da Empresa", "11123456000100",
+      sysNotification: SysNotification.email);
+```
+
+### Interfaces
+
+Interface é um contrato, que diz o que as classes devem implementar para que funcionem corretamente. A interface passa todas as diretrizes para a classe que está implementando esta interface
+
+No exemplo a seguir, criamos uma nova classe, que servirá para enviar notificações para o usuário, essa classe vai receber uma Pessoa e a partir daí enviará a notificação, seja por email, sms ou token (push)
+
+No dart, para declararmos uma interface nós devemos criar uma classe abstrata, utilizando a palavra reservada `abstract`.
+
+Nosso código até aqui fica assim:
+
+```dart
+abstract class NotificationInterface {
+  void SendNotification(Pessoa pessoa);
+}
+```
+
+Podemos notar que não há ação nenhuma na implementação do método, tudo o que importa é a sua assinatura e os parâmetros que serão recebidos, o restante será feito pela classe que irá implementar a nossa interface.
+
+No nosso exemplo, criaremos uma classe para cada tipo de envio de notificação (sms, email e token(push)).
+
+A próxima diferença entre a criação de uma classe abstrata e de uma interface está na forma em que outras classes a implementarão.
+
+Ao invés de utilizar a palavra reservada `extends`, usaremos a palavra reservada `implements` seguida pelo nome da classe e então estaremos implementando uma interface e poderemos sobreescrever seus métodos da maneira que desejarmos.
+
+```dart
+class EmailNotification implements NotificationInterface {
+  @override
+  void sendNotification(Pessoa pessoa) {
+    print("Enviando email para ${pessoa.getName()}");
+  }
+}
+```
+
+Agora, criamos a classe que enviará as notificações 
+
+```dart
+class SendNotification {
+  NotificationInterface? notification;
+
+  void defineNotification(Pessoa pessoa) {
+    switch (pessoa.getNotificationActivity()) {
+      case SysNotification.email:
+        notification = EmailNotification();
+        break;
+      case SysNotification.pushNotification:
+        notification = TokenNotification();
+        break;
+      case SysNotification.sms:
+        notification = SmsNotification();
+        break;
+      default:
+        break;
+    }
+    if (notification != null){
+      notification!.sendNotification(pessoa);
+    }
+  }
+}
+```
+Depois do switch case utilizamos uma condição if para tratar a nulidade da variável `notification` e como instanciamos essa variável como `nullable`, utilizando `?`, para garantirmos que o valor não será nulo dentro dessa condição, utilizamos o ponto de exclamação `!`.
 
 
 
@@ -678,10 +786,11 @@ Bibliografia
 
 [1] https://medium.com/yavar/how-does-dart-vm-work-65039356e708
 [2] https://mrale.ph/dartvm/
-
+[3] https://dart.dev/language/enums
 
 Certificações
 
 https://www.dio.me/certificate/AF3226E4/share
 https://www.dio.me/certificate/11E9F9FD/share
 https://www.dio.me/certificate/5BA26F79/share
+https://www.dio.me/certificate/5B3C12E4/share
