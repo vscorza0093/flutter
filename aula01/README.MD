@@ -20,7 +20,7 @@ Map.............................................
 Constantes......................................
 Dynamic.........................................
 DateTime........................................
-Operação ternária.....................................
+Operação ternária...............................
 switch case.....................................
 input do usuário................................
 
@@ -43,6 +43,14 @@ Enumerators.....................................
 Interface.......................................
 
 Parte 4 - Boas práticas e Tratamento de Exceções
+
+Tratamento de Exceções..........................
+Classes estáticas...............................
+Criando exceções customizadas...................
+Classes de Exceções.............................
+Boas práticas e Lint............................
+
+Parte 5 - Introdução a testes em Dart
 
 
 ```
@@ -787,6 +795,8 @@ Depois do switch case utilizamos uma condição if para tratar a nulidade da var
 
 ## Boas práticas e Tratamento de Exceções
 
+### Tratamento de Exceções
+
 Os tratamentos de erros são um bloco de códigos em que esperamos que possam ocorrer um erro.
 
 Para evitar que a nossa aplicação feche durante seu uso, utilizamos blocos de exceção, previnindo qualquer possível erro fatal.
@@ -945,8 +955,99 @@ Em seguida devemos criar um arquivo chamado `analysis_options.yaml` e inserir a 
 Todos os problemas como nome de arquivos, de parâmetros, métodos, identação e muitos outros são indicados pelo lint, é um pacote que nos auxilia muito bem na identificação de problemas de boas práticas.
 
 
+## Introdução a testes em Dart
+
+### Introdução a testes
+
+Testes nos ajudam a evitar erros antes da aplicação ir para produção
+Testes nos ajudam a reduzir custos com testes manuais
+Testes trazem mais confiabilidade ao código
+
+Testes são extremamente importantes para verificar nosso código com agilidade e confiança
+
+O Dart possui sua própria configuração de criação e execução de testes
+
+Executamos testes com o comando `dart run test`
+
+Usaremos Matchers, que são execuções de código, similares a funções, que aceitam uma descrição, e utilizam a palavra reservada `expect` para executar uma função, com determinados, que deverá entregar um resultado específico esperado `equals()`
+
+```dart
+test('Calcula o valor do produto com desconto', (){
+  expect(app.calcularDesconto(1000, 150), equals(850))
+});
+```
+
+Podemos colocar a condição, o método a classe, enfim, o que quisermos dentro do equals para fazer a verificação do resultado.
+
+### Testes que esperam erros
+
+Digamos que nesse mesmo aplicativo que calcula o desconto sobre o valor de produtos tivesse vindo um produto de valor 0, como um desconto aplicado sobre esse produto deveria ser tratado? Devemos lançar uma exceção ou devemos calcular e retornar um valor negativo? Ou devemos encerrar o programa?
+
+Digamos que para este erro desejamos lançar uma exceção.
+
+A função que calcula o desconto e que recebe os valores, deverá verificar a condição que está sendo mal imputada e lançar a exceção dentro dela.
+
+Se fizermos isso e simplesmente adicionarmos o teste no arquivo de testes, quando executarmos nos será lançada a exceção, porém os testes continuarão rodando, esperando que a próxima ação seja tomada e não é isso que queremos
+
+```dart
+  test('produtoSemValor', () {
+    expect(app.calcularDesconto(0, 100, false), equals(-150));
+  });
+```
+
+Devemos então, utilizar uma arrow function com uma formatação diferente, indicando que o tipo esperado e que será retornado, ou melhor, lançado através do método throwsA() que espera um `matcher` como argumento, é uma exceção
+
+```dart
+  test('produtoSemValor', () {
+    expect(() => app.calcularDesconto(0, 150, false),
+        throwsA(TypeMatcher<ArgumentError>()));
+  });
+```
+
+Estamos esperando receber uma exceção que seja exatamente uma exceção do tipo `ArgumentError`, caso qualquer outra execção seja lançada, esse teste não será contemplado.
+
+Podemos criar diversos arquivos de testes, mas todo arquivo de teste deve terminar com a palavra `test` antes da extensão `.dart`
 
 
+### Grupo de testes
+
+O Dart nos permite executar o mesmo teste utilizando parâmetros diferentes, para evitar que tenhamos que criar diversos testes ou alterar os valores manualmente toda vez que quisermos fazer testes diferentes
+
+Utilizamos o método `group()` que logo de início buscará dois parâmetros, o primeiro sendo a descrição do agrupamento e o segundo o corpo de uma função anônima
+
+No corpo da função deveremos criar um map com o parâmetro que desejamos testar e o resultado que esperamos. No caso do nosso exemplo, teremos um map com três chaves e três valores que é a chave de um map para outro valor, que é o resultado desejado.
+
+```dart
+  group('Calcula o valor do produto com desconto', () {
+    var valuesToTest = {
+      {'valor': 1000, 'desconto': 150, 'percentual': false}: 850,
+    };
+  });
+```
+
+Podemos criar inúmeras possibilidades para serem testadas, seguindo a sequência lógica do nosso map
+
+Como estamos tratando de uma lista de maps, deveremos desempacotar cada valor individualmente e como eles se tornaram uma lista de objetos, já que o map é tratado como objeto, devemos utilizar o método toString() em cada valor antes de fazer o parse para o tipo correto antes de enviar os valores para a chamada da função
+
+```dart
+  group('Calcula o valor do produto com desconto', () {
+    var valuesToTest = {
+      {'valor': 1000, 'desconto': 150, 'percentual': false}: 850,
+      {'valor': 300, 'desconto': 80, 'percentual': false}: 220,
+      {'valor': 1000, 'desconto': 15, 'percentual': true}: 850,
+      {'valor': 300, 'desconto': 80, 'percentual': true}: 60
+    };
+    valuesToTest.forEach((values, expected) {
+      expect(
+          app.calcularDesconto(
+            double.parse(values["valor"].toString()),
+            double.parse(values["desconto"].toString()),
+            bool.parse(["percentual"].toString()),
+          ),
+          equals(expected));
+    });
+  });
+```
 
 
 
