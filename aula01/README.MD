@@ -20,7 +20,7 @@ Map.............................................
 Constantes......................................
 Dynamic.........................................
 DateTime........................................
-if ternário.....................................
+Operação ternária.....................................
 switch case.....................................
 input do usuário................................
 
@@ -41,6 +41,9 @@ Herança.........................................
 Classes Abstratas...............................
 Enumerators.....................................
 Interface.......................................
+
+Parte 4 - Boas práticas e Tratamento de Exceções
+
 
 ```
 
@@ -352,11 +355,11 @@ Podemos adicionar ou subtrair datas.
 Podemos verificar se determinada data vem antes ou depois de outra data.
 
 
-### If ternário
+### Operador ternário
 
-O if ternário, em algumas situações, é uma excelente alternativa ao if padrão e podemos inicializar uma variável que receberá o conteúdo de uma das duas condições, que pode ser um objeto de qualquer tipo, vindo diretamente do resultado da condição ou através do retorno de uma função chamada ao concluir a verificação condicional.
+O operador ternário, em algumas situações, é uma excelente alternativa ao if padrão e podemos inicializar uma variável que receberá o conteúdo de uma das duas condições, que pode ser um objeto de qualquer tipo, vindo diretamente do resultado da condição ou através do retorno de uma função chamada ao concluir a verificação condicional.
 
-O if ternário nos possibilita uma diversificação bastante interessante e vale o aprofundamento
+O operador ternário nos possibilita uma diversificação bastante interessante e vale o aprofundamento
 
 ```dart
 void main(List<String> arguments) {
@@ -600,6 +603,7 @@ Neste caso estamos manipulando um Map, transformando esse Map em uma String e us
 
 Isso já acaba se mesclando com um conceito de polimorfismo, pois temos um método padrão que está implementando em uma classe padrão, mas que agora foi sobreescrito e transformado em um método com o mesmo nome, mas com um comportamento próprio.
 
+Em Dart, não podemos utilizar a forma de polimorfismo, dentro de uma mesma classe, onde a sobreescrita de método possuem o mesmo nome com parâmetros diferentes, devemos sempre utilizar nomes diferentes para os métodos na mesma classe.
 
 ### construtores
 
@@ -778,6 +782,90 @@ class SendNotification {
 }
 ```
 Depois do switch case utilizamos uma condição if para tratar a nulidade da variável `notification` e como instanciamos essa variável como `nullable`, utilizando `?`, para garantirmos que o valor não será nulo dentro dessa condição, utilizamos o ponto de exclamação `!`.
+
+
+
+## Boas práticas e Tratamento de Exceções
+
+Os tratamentos de erros são um bloco de códigos em que esperamos que possam ocorrer um erro.
+
+Para evitar que a nossa aplicação feche durante seu uso, utilizamos blocos de exceção, previnindo qualquer possível erro fatal.
+
+Podemos utilizar o bloco `try catch` ou o bloco `try catch finally`
+
+```dart
+try { 
+
+} on Exception catch(e) {
+
+} catch(e) {
+
+}
+
+try {
+  
+} on Exception catch(e) {
+
+} catch(e) {
+
+} finally {
+  
+}
+```
+
+A aplicação será avaliada e continuada a partir dos blocos que forem executados, ao invés de tratarmos erros com ifs e operadores ternários, por exemplo, podemos utilizar o bloco try catch, que é muito mais elegante e poderoso.
+
+```dart
+  bool loop = true;
+  while (loop) {
+    print("Digite um número");
+    var line = stdin.readLineSync(encoding: utf8);
+    try {
+      double numero = double.parse(line ?? "");
+      print(numero);
+    } catch (e) {
+      print("Entrada inválida: $line");
+    } finally {
+      bool inloop = true;
+      while (inloop) {
+        print("Executar novamente? S/~");
+        var line = stdin.readLineSync(encoding: utf8);
+        var res = (line == "s")
+            ? ((inloop = false), (loop = true))
+            : ((inloop = false), (loop = false));
+      }
+    }
+  }
+```
+
+
+### Classes estáticas
+
+Em dart, classes estáticas são simplesmente classes que possuem métodos estáticos, de fato, essas classes ainda podem ser instanciadas e elas também podem conter métodos não estáticos em sua implementação, mas isso pode gerar confusões e criar sujeiras no código, já que métodos estáticos não podem ser acessados de uma instância de uma classe e métodos não estáticos não podem ser acessados a partir apenas da chamada dessa classe. 
+
+```dart
+class Aluno {
+  static String getNome() {
+    return _nome;
+  }
+
+  void printNome() {
+    print(_nome);
+  }
+}
+
+void main(){
+  Aluno.getNome();
+
+  Aluno aluno = Aluno();
+  aluno.printNome();
+}
+```
+
+Claramente é um exemplo simplório, mas também fica aparente o tipo de sujeira que isso pode gerar no código.
+
+
+
 
 
 
