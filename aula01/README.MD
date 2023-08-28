@@ -864,6 +864,91 @@ void main(){
 
 Claramente é um exemplo simplório, mas também fica aparente o tipo de sujeira que isso pode gerar no código.
 
+### Criando exceções customizadas
+
+Podemos criar exceções que agem da maneira que desejarmos
+
+Por exemplo:
+```dart
+  String nome = ConsoleUtils.readStringMessage("\nDigite o nome do aluno: ");
+  if (nome.trim() == "") {
+    throw Exception();
+  }
+```
+Aqui estamos indicando que o nome não pode ser vazio, e que uma exceção deve ser lançada, caso o nome seja vazio.
+
+Dessa forma o programa irá simplesmente fechar e um log será lançado no console, indicando a linha onde a exceção foi lançada, mas podemos tratar esse erro da forma que quisermos, por exemplo adicionando uma string ao parâmetro de `Exception`
+
+```dart
+  String nome = ConsoleUtils.readStringMessage("\nDigite o nome do aluno: ");
+  if (nome.trim() == "") {
+    throw Exception("Nome inválido");
+  }
+```
+
+### Classes de Exceções
+
+Para customizarmos completamente nossas exceções, devemos criar classes que irão tratar de exceções específicas, essas classes deverão extender de `Exception` e serão sempre utilizadas com `throw`
+
+```dart
+class InvalidNameException implements Exception {
+  String error() => "Nome inválido";
+}
+
+void main(){
+  throw InvalidNameException();
+}
+```
+
+Nessa classe implementamos o que quisermos, mas para que nossa exceção possa de fato retornar o valor dos métodos, devemos sobreescrever o método `toString()` retornando o método que representa nossa exceção
+
+```dart
+class InvalidNameException implements Exception {
+  String error() => "Nome inválido";
+
+  @override
+  String toString() {
+    return "InvalidNameException: " + error();
+  }
+}
+```
+
+Podemos colocar nossa classe em um bloco try catch e tratar o erro de maneira mais completa, impedindo que o programa simplesmente feche caso nossa classe de exceção tenha sido lançada.
+
+```dart
+  try {
+    if (nome.trim() == "") {
+      throw InvalidNameException();
+    }
+  } on InvalidNameException {
+    print(InvalidNameException().toString());
+    nome = "Aluno";
+    print("Nome padrão adicionado");
+  } catch (err) {
+    exit(0);
+  }
+```
+
+### Boas práticas e Lint [4],[5]
+
+Podemos utilizar por padrão um pacote que vem junto com o dart, que nos ajuda a perceber o que pode ter de errado em nosso código. São os chamados `lints`. Temos lints para `Flutter` e para `Dart`.
+
+Caso o lint já não esteja por padrão, podemos adiciona-lo de diversas formas em nosso projeto. Por aqui, vamos adicioná-lo através das devs dependencies, adicionao uma informação ao arquivo `pubspec.yaml`
+
+```
+dev_dependencies:
+  lints: ^2.0.0
+```
+
+Em seguida devemos criar um arquivo chamado `analysis_options.yaml` e inserir a seguinte informação: `include: package:lints/recommended.yam`
+
+Todos os problemas como nome de arquivos, de parâmetros, métodos, identação e muitos outros são indicados pelo lint, é um pacote que nos auxilia muito bem na identificação de problemas de boas práticas.
+
+
+
+
+
+
 
 
 
@@ -875,6 +960,10 @@ Bibliografia
 [1] https://medium.com/yavar/how-does-dart-vm-work-65039356e708
 [2] https://mrale.ph/dartvm/
 [3] https://dart.dev/language/enums
+[4] https://pub.dev/packages/lint
+[5] https://pub.dev/packages/lint
+
+
 
 Certificações
 
@@ -882,3 +971,4 @@ https://www.dio.me/certificate/AF3226E4/share
 https://www.dio.me/certificate/11E9F9FD/share
 https://www.dio.me/certificate/5BA26F79/share
 https://www.dio.me/certificate/5B3C12E4/share
+https://www.dio.me/certificate/9E48E0B4/share
