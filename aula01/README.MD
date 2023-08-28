@@ -1037,14 +1037,15 @@ Como estamos tratando de uma lista de maps, deveremos desempacotar cada valor in
       {'valor': 1000, 'desconto': 15, 'percentual': true}: 850,
       {'valor': 300, 'desconto': 80, 'percentual': true}: 60
     };
-    valuesToTest.forEach((values, expected) {
-      expect(
-          app.calcularDesconto(
-            double.parse(values["valor"].toString()),
-            double.parse(values["desconto"].toString()),
-            bool.parse(["percentual"].toString()),
-          ),
-          equals(expected));
+    valuesToTest.forEach((key, value) {
+      test('Calcula o valor do produto com desconto', () {
+        expect(
+            app.calcularDesconto(
+                double.parse(key['valor'].toString()),
+                double.parse(key['desconto'].toString()),
+                key['percentual'].toString() == 'true'),
+            equals(value));
+      });
     });
   });
 ```
