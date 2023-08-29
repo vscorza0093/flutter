@@ -995,7 +995,7 @@ Se fizermos isso e simplesmente adicionarmos o teste no arquivo de testes, quand
   });
 ```
 
-Devemos então, utilizar uma arrow function com uma formatação diferente, indicando que o tipo esperado e que será retornado, ou melhor, lançado através do método throwsA() que espera um `matcher` como argumento, é uma exceção
+Devemos então, utilizar uma arrow function com uma formatação diferente, indicando que o tipo esperado e que será retornado, ou melhor, lançado através do método throwsA() que espera um `Matcher` como argumento, é uma exceção
 
 ```dart
   test('produtoSemValor', () {
@@ -1050,6 +1050,161 @@ Como estamos tratando de uma lista de maps, deveremos desempacotar cada valor in
   });
 ```
 
+### Matcher
+
+Matcher é uma classe específica em Dart que possui diversos métodos e constantes focados em fazer as comparações e verificar se os casos de teste estão corretos ou não, de acordo com os parâmetros recebidos.
+
+O método `equals`, utilizado anteriormente, é um exemplo de Matcher e outros Matchers nada mais são do que outras possibilidades além do `equals`
+
+Utilizaremos Matchers sempre dentro de um bloco `expect()` ou `expectAsync()`
+
+Podemos combinar alguns desses métodos, como por exemplo `isNot(equals())`
+
+```dart
+  group('Calcula o valor do produto com desconto', () {
+    var valuesToTest = {
+      {'valor': 1000, 'desconto': 150, 'percentual': false}: 830,
+    };
+    valuesToTest.forEach((key, value) {
+      test('Calcula o valor do produto com desconto', () {
+        expect(
+            app.calcularDesconto(
+                double.parse(key['valor'].toString()),
+                double.parse(key['desconto'].toString()),
+                key['percentual'].toString() == 'true'),
+            isNot(equals(value)));
+      });
+    });
+```
+
+Também podemos utilizar constantes no lugar das funções. Essas constantes também são Matchers que irão representar diversos valores que serão utilizados como resultado esperado de cada teste
+
+No exemplo abaixo, utilizamos a constante `anything`, que é um Matcher que aceita qualquer valor
+
+```dart
+  expect(
+      app.calcularDesconto(
+          double.parse(key['valor'].toString()),
+          double.parse(key['desconto'].toString()),
+          key['percentual'].toString() == 'true'),
+      throwsA(anything));
+```
+
+No caso abaixo, poderíamos substituir `TypeMatcher<ArgumentError>()` pela constante `isArgumentError`, por exemplo
+```dart
+  expect(
+      () => app.calcularDesconto(
+          double.parse(key['valor'].toString()),
+          double.parse(key['desconto'].toString()),
+          key['percentual'].toString() == 'false'),
+      throwsA(TypeMatcher<ArgumentError>());
+```
+```dart
+  expect(
+      () => app.calcularDesconto(
+          double.parse(key['valor'].toString()),
+          double.parse(key['desconto'].toString()),
+          key['percentual'].toString() == 'false'),
+      throwsA(isArgumentError);
+```
+
+Nota: As constantes não precisam ser utilizadas dentro do método `throwsA`
+
+Podemos implementar Matchers customizados, através de herança. Classes derivadas devem sempre chamar o construtor padrão com nome e descrição de recurso e um Matcher de instância, e também deve implementar o método abstrato `featureValueOf`
+
+API do flutter com todos os Matchers [6]
+
+
+## Testes com Mock e HTTP
+
+Agora iremos criar uma função de teste que se conecta a um endpoint http, faz uma chamada de uma informação que será retornada para nós para que seja possível verificar se o tipo de informação retornado é o que esperamos
+
+Nem sempre teremos endpoints disponíveis para serem diretamente testados. Em ambientes de QA, quando testes unitários são realizados, muitas vezes não se usam endpoints reais, os dados são `mockados`
+
+Então evoluiremos nossa função para mostrar que conseguimos mockar dados simulando que uma chamada http foi realizada mesmo que não tenha sido de fato
+
+Utilizaremos o pacote `http` do Dart, que será instalado através das dependências, inserindo a informação `http: ^1.1.0` no arquivo `pubspec.yaml`
+
+Em seguida poderemos importar o pacote `import 'package:http/http.dart';`
+
+Agora já podemos criar nossa função 
+
+```dart
+retornarCEP(String cep) async {
+  Uri url = Uri.parse('https://viacep.com.br/ws/${cep}/json/');
+  var response = await http.get(url);
+  return response.body;
+}
+```
+
+Uri é uma interface que implementa o formato de criação de url's em nosso sistema. Podemos criar uma URI e fazer o parse de uma string para atribuir o valor a esta variável ou podemos instanciar uma URI e fragmentar a URL em cada propriedade
+
+```dart
+Uri url = Uri(
+  scheme: 'https',
+  host: 'viacep.com.br',
+  path: '/ws/${cep}/json/'
+);
+```
+
+O método `http.get()` recebe uma URI como parâmetro
+
+Para recebermos o retorno correto do método `http.get()`, nossa função deverá ser `async` e nosso método `http.get()` deverá ser `await`. `async` e `await` devem estar sempre juntos
+
+A propriedade `body` contida na variável `response` que recebeu a resposta do método `http.get()` é onde poderemos visualizar todas as informações que foram retornadas para nós. Esse body vem em formato de string, então podemos printá-lo diretamente no terminal, por mais que o formato pareça de json
+
+```
+{
+cep: "01001-001",
+logradouro: "Praça da Sé",
+complemento: "lado par",
+bairro: "Sé",
+localidade: "São Paulo",
+uf: "SP",
+ibge: "3550308",
+gia: "1004",
+ddd: "11",
+siafi: "7107"
+}
+```
+
+#### jsonDecode()
+
+Agora, para testarmos individualmente cada elemente retornado para a nossa função, separando ele de string para json, devemos utilizar o método `jsonDecode()` e passar alguns parâmetros, dentro da nossa função principal e não no arquivo de testes
+
+Devemos importar o pacote `dart:convert`
+
+```dart
+  var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+```
+
+Basicamente o método `jsonDecode`, a partir de alguns parâmetros, reconhece toda a string passada e cria um novo map a partir de elementos que estão posicionados em formato chave : valor, porém este é um Map do tipo `<dynamic, dynamic>`, já que o conversor não sabe exatamente o tipo que virá como chave e como valor.
+
+#### Async, Await, Future
+
+Além disso, nossa função, para retornar corretamente este novo map, deverá ser um Map<dynamic, dynamic>, mas como estamos trabalhando com uma operação `async`, devemos esperar um `Future<>`, que é resultado de uma chamada assíncrona.
+
+O Dart possui uma documentação dinâmica que trata mais sobre operações assíncronas [7]
+
+Nossa função fica assim:
+
+```dart
+Future<Map<dynamic, dynamic>> retornarCEP(String cep) async {
+  Uri url =
+      Uri(scheme: 'https', host: 'viacep.com.br', path: '/ws/${cep}/json/');
+  var response = await http.get(url);
+  var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+  print(url.toString());
+  return response.body;
+}
+```
+
+Agora o body foi transformado em um novo map e podemos acessar seu conteúdo pelas chaves designadas
+
+### VOLTAR ESTUDOS A PARTIR DO MINUTO 07:38 DA AULA TESTES COM MOCK E HTTP DO MÓDULO INTRODUÇÃO À TESTES EM DART
+
+
+
 
 
 
@@ -1064,6 +1219,8 @@ Bibliografia
 [3] https://dart.dev/language/enums
 [4] https://pub.dev/packages/lint
 [5] https://pub.dev/packages/lint
+[6] https://api.flutter.dev/flutter/package-Matcher_Matcher/package-Matcher_Matcher-library.html
+[7] https://dart.dev/codelabs/async-await
 
 
 

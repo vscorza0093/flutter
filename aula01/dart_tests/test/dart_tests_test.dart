@@ -1,17 +1,9 @@
+import 'dart:convert';
+
 import 'package:dart_tests/dart_tests.dart' as app;
 import 'package:test/test.dart';
 
 void main() {
-  test('produtoSemValor', () {
-    expect(() => app.calcularDesconto(0, 150, false),
-        throwsA(TypeMatcher<ArgumentError>()));
-  });
-
-  test('descontoSemValor', () {
-    expect(() => app.calcularDesconto(150, 0, false),
-        throwsA(TypeMatcher<ArgumentError>()));
-  });
-
   group('Calcula o valor do produto com desconto', () {
     var valuesToTest = {
       {'valor': 1000, 'desconto': 150, 'percentual': false}: 850,
@@ -26,7 +18,7 @@ void main() {
                 double.parse(key['valor'].toString()),
                 double.parse(key['desconto'].toString()),
                 key['percentual'].toString() == 'true'),
-            equals(value));
+            anything);
       });
     });
   });
@@ -42,8 +34,15 @@ void main() {
                 double.parse(key['valor'].toString()),
                 double.parse(key['desconto'].toString()),
                 key['percentual'].toString() == 'false'),
-            throwsA(TypeMatcher<ArgumentError>()));
+            throwsA(isArgumentError));
       });
     });
+  });
+
+  test('Retornar CEP', () async {
+    var body = await app.retornarCEP('01001000');
+    print(body);
+    expect(body["bairro"], equals("Sé"));
+    expect(body["complemento"], equals("lado ímpar"));
   });
 }
