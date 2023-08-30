@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
 double calcularDesconto(double valor, double desconto, bool percentual) {
   if (valor <= 0) {
     throw ArgumentError(
@@ -15,15 +11,6 @@ double calcularDesconto(double valor, double desconto, bool percentual) {
     return valor - (valor * desconto / 100);
   }
   return valor - desconto;
-}
-
-Future<Map<dynamic, dynamic>> retornarCEP(String cep) async {
-  Uri url =
-      Uri(scheme: 'https', host: 'viacep.com.br', path: '/ws/${cep}/json/');
-  // Uri url = Uri.parse('https://viacep.com.br/ws/${cep}/json/');
-  var response = await http.get(url);
-  var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
-  return decodedResponse;
 }
 
 int retornaValor(int num) {

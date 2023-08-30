@@ -1,8 +1,12 @@
-import 'dart:convert';
-
+import 'package:dart_tests/classes/via_cep.dart';
 import 'package:dart_tests/dart_tests.dart' as app;
+import 'package:mockito/annotations.dart';
 import 'package:test/test.dart';
+import 'package:mockito/mockito.dart';
 
+import 'dart_tests_test.mocks.dart';
+
+@GenerateMocks([MockViaCEP])
 void main() {
   group('Calcula o valor do produto com desconto', () {
     var valuesToTest = {
@@ -40,9 +44,25 @@ void main() {
   });
 
   test('Retornar CEP', () async {
-    var body = await app.retornarCEP('01001000');
-    print(body);
-    expect(body["bairro"], equals("Sé"));
-    expect(body["complemento"], equals("lado ímpar"));
+    MockMockViaCEP mockViaCEP = MockMockViaCEP();
+    when(mockViaCEP.retornarCEP('01001000'))
+        .thenAnswer((realInvocation) => Future.value({
+              "cep": "01001-000",
+              "logradouro": "Praça da Sé",
+              "complemento": "lado ímpar",
+              "bairro": "Sé",
+              "localidade": "São Paulo",
+              "uf": "SP",
+              "ibge": "3550308",
+              "gia": "1004",
+              "ddd": "11",
+              "siafi": "7107",
+            }));
+
+    var body = await mockViaCEP.retornarCEP('01001000');
+    expect(body["cep"], equals("01001-000"));
+    expect(body["logradouro"], equals("Praça da Sé"));
   });
 }
+
+class MockViaCEP extends Mock implements ViaCEP {}

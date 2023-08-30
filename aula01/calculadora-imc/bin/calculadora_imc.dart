@@ -7,7 +7,7 @@ import 'package:calculadora_imc/exceptions/invalid_weight_exception.dart';
 import 'package:calculadora_imc/pessoa.dart';
 
 void main(List<String> arguments) {
-  Pessoa pessoa = Pessoa('Vinicius', 52, 1.65);
+  // Pessoa pessoa = Pessoa('Vinicius', 52, 1.65);
 
   String? nome = stdin.readLineSync();
   String? altura = stdin.readLineSync();
@@ -16,9 +16,10 @@ void main(List<String> arguments) {
   double? alturaParse;
   double? pesoParse;
 
+  print("${nome} ${altura} ${peso}");
   try {
     if (nome == null || nome.trim() == "") {
-      InvalidNameException();
+      throw InvalidNameException();
     }
   } on InvalidNameException {
     print(InvalidNameException().toString());
@@ -30,19 +31,19 @@ void main(List<String> arguments) {
 
   try {
     if (altura == "" || altura == "0") {
-      InvalidHeightException();
+      throw InvalidHeightException();
+      print("oi altura");
     }
-  } on InvalidHeightException {
-    print(InvalidHeightException().toString());
+  } catch (InvalidHeightException) {
+    print("oi altura invalida");
+    print(InvalidHeightException);
     altura = "168";
     print("Altura padrão adicionada");
-  } catch (e) {
-    exit(0);
   }
 
   try {
     if (peso == "" || peso == "0") {
-      InvalidHeightException();
+      throw InvalidWeightException();
     }
   } on InvalidWeightException {
     print(InvalidWeightException().toString());
@@ -51,10 +52,17 @@ void main(List<String> arguments) {
   } catch (e) {
     exit(0);
   }
+  print("${nome} ${altura} ${peso}");
+
   alturaParse = double.tryParse(altura!);
   pesoParse = double.tryParse(peso!);
 
-  Pessoa cliente = Pessoa(nome!, pesoParse, alturaParse);
+  Pessoa cliente = Pessoa(nome!, pesoParse!, alturaParse!);
+  print(cliente.getPeso());
+  print(cliente.getAltura());
+  cliente.setIMC(CalculadoraIMC.getIMC(cliente.getPeso(), cliente.getAltura()));
+  print(cliente.getIMC());
+  CalculadoraIMC.checkIMC(cliente.getIMC());
 }
 
 

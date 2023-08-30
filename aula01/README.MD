@@ -1201,7 +1201,64 @@ Future<Map<dynamic, dynamic>> retornarCEP(String cep) async {
 
 Agora o body foi transformado em um novo map e podemos acessar seu conteúdo pelas chaves designadas
 
-### VOLTAR ESTUDOS A PARTIR DO MINUTO 07:38 DA AULA TESTES COM MOCK E HTTP DO MÓDULO INTRODUÇÃO À TESTES EM DART
+Para mockar os dados importaremos dois pacotes: `build_runner` e `mockito`
+
+```
+dependencies:
+  mockito: ^5.3.0
+
+dev_dependencies:
+  build_runner: ^2.2.0
+```
+
+O mockito será responsável por mockar os dados e o build runner será responsável por gerar a classe intermediária que nos auxiliará a mockar os dados
+
+Para conseguirmos mockar o dado, precisamos criar uma classe intermediária que irá extender de Mock e irá implementar a classe que criamos para fazer a requisição de dados via HTTP Get
+
+```dart
+  import 'package:mockito/mockito.dart';
+
+  class MockViaCEP extends Mock implements ViaCEP {}
+```
+
+Estamos implementando a classe `ViaCEP` pois a nossa classe `MockViaCEP` vai precisar de um método que está contido dentro da classe `ViaCEP`
+
+Para gerar a classe intermediária, precisaremos inserir uma notation `@GenerateMock`, que recebe um array de classes, no caso passaremos nossa classe `MockViaCEP` como parâmetro de índice 0 do array
+
+```dart
+@GenerateMocks([MockViaCEP])
+```
+
+Em seguida rodamos o comando `dart run build_runner build --delete-conflicting-outputs`.
+
+Utilizamos todos esses parâmetros para que seja feita uma limpeza na hora de gerar nossas classes, em seguida, todas as informações serão geradas automaticamente e, na pasta `test`, surgirá um novo arquivo de testes, com extensão `.mocks.dart`
+
+Como utilizaremos uma classe que vai chamar a nossa classe primária, não precisamos mais instanciar nossa classe primária, devemos utilizar outra estrutura de código.
+
+Dentro de uma estrutura de blocos de teste 
+
+
+```dart
+  test('Retornar CEP', () async {
+    MockMockViaCEP mockViaCEP = MockMockViaCEP();
+    when(mockViaCEP.retornarCEP('01001000'))
+        .thenAnswer((realInvocation) => Future.value({
+              "cep": "01001-000",
+              "logradouro": "Praça da Sé",
+              "complemento": "lado ímpar",
+              "bairro": "Sé",
+              "localidade": "São Paulo",
+              "uf": "SP",
+              "ibge": "3550308",
+              "gia": "1004",
+              "ddd": "11",
+              "siafi": "7107",
+            }));
+
+    var body = await mockViaCEP.retornarCEP('01001000');
+    expect(body["cep"], equals("01001-000"));
+  });
+```
 
 
 
