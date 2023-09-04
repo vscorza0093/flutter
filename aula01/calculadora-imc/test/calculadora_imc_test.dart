@@ -1,12 +1,7 @@
 import 'package:calculadora_imc/calculadora_imc.dart';
-import 'package:calculadora_imc/exceptions/invalid_name_exception.dart';
 import 'package:calculadora_imc/pessoa.dart';
-import 'package:mockito/annotations.dart';
 import 'package:test/test.dart';
 
-import 'package:mockito/mockito.dart';
-
-@GenerateMocks([CalculadoraIMC])
 void main() {
   group('Nome inválido', () {
     Pessoa pessoa = Pessoa("", 0, 0);

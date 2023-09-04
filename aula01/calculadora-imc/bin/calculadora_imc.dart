@@ -5,7 +5,6 @@ import 'package:calculadora_imc/exceptions/invalid_height_exception.dart';
 import 'package:calculadora_imc/exceptions/invalid_name_exception.dart';
 import 'package:calculadora_imc/exceptions/invalid_weight_exception.dart';
 import 'package:calculadora_imc/pessoa.dart';
-import 'package:test/test.dart';
 
 void main(List<String> arguments) {
   // Pessoa pessoa = Pessoa('Vinicius', 52, 1.65);
