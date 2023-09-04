@@ -20,7 +20,7 @@ class Pessoa {
   }
 
   String pessoaPesoTeste(double? peso) {
-    if (peso == 0 || peso == null) {
+    if (peso == 0 || peso == null || peso < 0) {
       return InvalidWeightException().toString();
     } else {
       setPeso(peso);

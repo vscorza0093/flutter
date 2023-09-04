@@ -2,12 +2,20 @@ import 'package:calculadora_imc/exceptions/invalid_height_weight_exception.dart'
 
 class CalculadoraIMC {
   static double getIMC(double? peso, double? altura) {
-    if (peso == 0 || altura == 0 || peso == null || altura == null) {}
+    if (peso == 0 ||
+        altura == 0 ||
+        peso == null ||
+        altura == null ||
+        peso < 0) {}
     return peso! / (altura! * altura);
   }
 
   static String getIMCTeste(double? peso, double? altura) {
-    if (peso == 0 || altura == 0 || peso == null || altura == null) {
+    if (peso == 0 ||
+        altura == 0 ||
+        peso == null ||
+        altura == null ||
+        altura < 0) {
       return InvalidHeightWeightException().toString();
     }
     return (peso / (altura * altura)).toString();

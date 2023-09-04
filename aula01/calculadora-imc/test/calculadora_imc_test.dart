@@ -23,6 +23,7 @@ void main() {
     var valuesToTest = {
       {'peso': 0.0}: "InvalidWeightException: Peso inválido",
       {'peso': null}: "InvalidWeightException: Peso inválido",
+      {'peso': -1.0}: "InvalidWeightException: Peso inválido",
     };
     valuesToTest.forEach((key, value) {
       test('Peso inválido', () {
@@ -37,7 +38,8 @@ void main() {
       {'altura': 0.0}: "InvalidHeightException: Altura inválida",
       {'altura': null}: "InvalidHeightException: Altura inválida",
       {'altura': 0.54}: "0.54",
-      {'altura': 0.53}: "InvalidHeightException: Altura inválida"
+      {'altura': 0.53}: "InvalidHeightException: Altura inválida",
+      {'altura': -1.0}: "InvalidHeightException: Altura inválida",
     };
     valuesToTest.forEach((key, value) {
       test('Altura inválida', () {
