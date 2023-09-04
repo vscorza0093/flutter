@@ -66,15 +66,12 @@ void main(List<String> arguments) {
     print(InvalidWeightException().toString());
     pesoParse = 70;
   }
-  print("Aqui");
-  print("\n$nome $altura $peso\n");
+  print("\nNome: $nome\nAltura: $altura\nPeso:$peso\n");
 
   Pessoa cliente = Pessoa(nome, pesoParse!, alturaParse!);
-  print(cliente.getPeso());
-  print(cliente.getAltura());
   cliente.setIMC(CalculadoraIMC.getIMC(cliente.getPeso(), cliente.getAltura()));
   print(cliente.getIMC());
-  CalculadoraIMC.checkIMC(cliente.getIMC());
+  print(CalculadoraIMC.checkIMC(cliente.getIMC()));
 }
 
 
