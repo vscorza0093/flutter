@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:teladelogin/pages/login_page.dart';
+import 'package:teladelogin/pages/sub-pages/home_page_sub1.dart';
+import 'package:teladelogin/pages/sub-pages/home_page_sub2.dart';
+import 'package:teladelogin/pages/sub-pages/home_page_sub3.dart';
+import 'package:teladelogin/pages/user_info.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,6 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  PageController pageController = PageController(initialPage: 0);
+  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,41 +24,93 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.black,
           title: const Text("Página inicial"),
         ),
+        drawer: Drawer(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UserInfo(
+                                  pageTitle: "Dados cadastrais",
+                                )));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      "Dados cadastrais",
+                      style: GoogleFonts.roboto(fontSize: 16),
+                    ),
+                  )),
+              const Divider(),
+              const SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      "Termos de uso e privacidade",
+                      style: GoogleFonts.roboto(fontSize: 16),
+                    ),
+                  )),
+              const Divider(),
+              const SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    width: double.infinity,
+                    child: Text(
+                      "Configurações",
+                      style: GoogleFonts.roboto(fontSize: 16),
+                    ),
+                  )),
+              const Divider(),
+            ]),
+          ),
+        ),
         backgroundColor: const Color(0xff151515),
-        body: SingleChildScrollView(
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const SizedBox(
-              height: 50,
-            ),
-            SizedBox(
-              child: Text(
-                "Meu nome é Alexandre Natale",
-                style: GoogleFonts.roboto(
-                    fontSize: 20, color: const Color(0xffffffff)),
-              ),
-            ),
-            Expanded(child: Container()),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              child: TextButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        const Color.fromARGB(255, 90, 29, 151))),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()));
+        body: Column(
+          children: [
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                onPageChanged: (value) {
+                  setState(() {
+                    currentPage = value;
+                  });
                 },
-                child: Text(
-                  "Logout",
-                  style: GoogleFonts.roboto(color: Colors.white, fontSize: 20),
-                ),
+                children: const [
+                  HomePageSub1(),
+                  HomePageSub2(),
+                  HomePageSub3(),
+                ],
               ),
-            )
-          ]),
+            ),
+            BottomNavigationBar(
+                currentIndex: currentPage,
+                onTap: (value) {
+                  pageController.jumpToPage(value);
+                },
+                items: const [
+                  BottomNavigationBarItem(
+                      label: "Pag 1", icon: Icon(Icons.home)),
+                  BottomNavigationBarItem(
+                      label: "Pag 2", icon: Icon(Icons.abc_sharp)),
+                  BottomNavigationBarItem(
+                      label: "Pag 3", icon: Icon(Icons.usb)),
+                ])
+          ],
         ),
       ),
     );

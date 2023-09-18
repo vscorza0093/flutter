@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 width: double.infinity,
-                height: 30,
+                height: 35,
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 padding: const EdgeInsets.only(left: 3, top: 2),
                 color: const Color.fromARGB(255, 50, 50, 50),
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Container(
                 width: double.infinity,
-                height: 30,
+                height: 35,
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 padding: const EdgeInsets.only(left: 3, top: 2),
                 color: const Color.fromARGB(255, 50, 50, 50),
@@ -161,8 +161,8 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 15),
                       ),
                       onPressed: () {
-                        if (emailController.text == 'vinicius@email.com' &&
-                            passwordController.text.trim() == 'senha') {
+                        if (emailController.text == 'v' &&
+                            passwordController.text.trim() == 'v') {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
