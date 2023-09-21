@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:teladelogin/pages/login_page.dart';
 
-class HomePageSub1 extends StatelessWidget {
-  const HomePageSub1({super.key});
+class HomeSubPage extends StatelessWidget {
+  const HomeSubPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Sub Page 1")),
+        appBar: AppBar(title: const Text("Home")),
         body: Container(
           color: Colors.blueGrey,
           child:

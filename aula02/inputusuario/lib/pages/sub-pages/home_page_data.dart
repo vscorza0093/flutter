@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class HomePageSub2 extends StatelessWidget {
-  const HomePageSub2({super.key});
+class DataSubPage extends StatelessWidget {
+  const DataSubPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Sub Page 2"),
+          title: const Text("Data"),
         ),
-        backgroundColor: Colors.yellow,
+        backgroundColor: const Color.fromARGB(255, 0, 111, 134),
       ),
     );
   }

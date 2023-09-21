@@ -35,9 +35,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const UserInfo(
-                                  pageTitle: "Dados cadastrais",
-                                )));
+                            builder: (context) => const UserInfo()));
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 5),
