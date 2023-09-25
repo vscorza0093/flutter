@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:teladelogin/model/form_fields.dart';
 import 'package:teladelogin/pages/repositories/language_repository.dart';
 import 'package:teladelogin/pages/repositories/level_repository.dart';
 import 'package:teladelogin/shared/widgets/callendar_text_field.dart';
 import 'package:teladelogin/shared/widgets/simple_text_field.dart';
 import 'package:teladelogin/shared/widgets/text_label.dart';
+
+import 'package:teladelogin/shared/methods/methods.dart';
 
 class UserInfo extends StatefulWidget {
   const UserInfo({Key? key}) : super(key: key);
@@ -13,31 +16,32 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
-  final TextEditingController nameController = TextEditingController(text: "");
-  final TextEditingController lastNameController =
-      TextEditingController(text: "");
-  final TextEditingController callendarController =
-      TextEditingController(text: "");
-
   LevelRepository levelRepository = LevelRepository();
   LanguageRepository languageRepository = LanguageRepository();
-  var menuOptions = [];
+
+  int timeExperience = 1;
+  bool saving = false;
+
+  var experienceMenuOptions = [];
   var languageOption = [];
-  var selectedLanguage = [];
 
-  double selectedSalary = 0;
+  static const VERIFY_DATA = "Verifique os dados inseridos";
+  static const SUCCESS = "Dados salvos com sucesso";
 
-  int timeExperience = 0;
+  FormFields formFields = FormFields(
+      TextEditingController(text: ""),
+      TextEditingController(text: ""),
+      TextEditingController(text: ""),
+      <String>[],
+      '',
+      0);
 
   @override
   void initState() {
-    menuOptions = levelRepository.getKnowledgeList();
+    experienceMenuOptions = levelRepository.getKnowledgeList();
     languageOption = languageRepository.getLanguageList();
     super.initState();
   }
-
-  String txt = '';
-  String currentSelected = '';
 
   @override
   Widget build(BuildContext context) {
@@ -47,94 +51,110 @@ class _UserInfoState extends State<UserInfo> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: ListView(children: [
-          SimpleTextField(labelText: "Name", controller: nameController),
-          const SizedBox(height: 8),
-          SimpleTextField(
-              labelText: "Last Name", controller: lastNameController),
-          const SizedBox(height: 8),
-          CallendarTextField(
-              labelText: 'Date of birth', controller: callendarController),
-          const SizedBox(height: 8),
-          const TextLabel(
-            text: 'Nível de experiência',
-          ),
-          Column(
-            children: menuOptions
-                .map((level) => RadioListTile(
-                    title: Text(level.toString()),
-                    selected: currentSelected == level,
-                    value: level,
-                    groupValue: currentSelected,
+        child: saving
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(children: [
+                SimpleTextField(
+                    labelText: "Name", controller: formFields.nameController),
+                const SizedBox(height: 8),
+                SimpleTextField(
+                    labelText: "Last Name",
+                    controller: formFields.lastNameController),
+                const SizedBox(height: 8),
+                CallendarTextField(
+                    labelText: 'Date of birth',
+                    controller: formFields.callendarController),
+                const SizedBox(height: 8),
+                const TextLabel(text: "Linguagens preferidas"),
+                Column(
+                    children: languageOption
+                        .map((language) => CheckboxListTile(
+                            title: Text(language),
+                            selected: false,
+                            value:
+                                formFields.selectedLanguage.contains(language),
+                            onChanged: (bool? value) {
+                              if (value!) {
+                                setState(() {
+                                  formFields.selectedLanguage.add(language);
+                                });
+                              } else {
+                                setState(() {
+                                  formFields.selectedLanguage.remove(language);
+                                });
+                              }
+                            }))
+                        .toList()),
+                const TextLabel(
+                  text: 'Nível de experiência',
+                ),
+                Column(
+                  children: experienceMenuOptions
+                      .map((level) => RadioListTile(
+                          title: Text(level.toString()),
+                          selected: formFields.selectedExperience == level,
+                          value: level,
+                          groupValue: formFields.selectedExperience,
+                          onChanged: (value) {
+                            setState(() {
+                              formFields.selectedExperience = value.toString();
+                            });
+                          }))
+                      .toList(),
+                ),
+                const SizedBox(height: 5),
+                TextLabel(
+                    text:
+                        "Pretensão Salarial: R\$ ${formFields.selectedSalary.round().toString()}"),
+                Slider(
+                    min: 0,
+                    max: 10000,
+                    value: formFields.selectedSalary,
+                    onChanged: (double value) {
+                      setState(() {
+                        formFields.selectedSalary = value;
+                      });
+                    }),
+                const SizedBox(
+                  height: 8,
+                ),
+                const TextLabel(
+                  text: "Tempo de experiência",
+                ),
+                DropdownButton(
+                    value: timeExperience,
+                    isExpanded: true,
+                    items: menuItems(30),
                     onChanged: (value) {
                       setState(() {
-                        currentSelected = value.toString();
+                        timeExperience = int.parse(value.toString());
                       });
-                    }))
-                .toList(),
-          ),
-          const SizedBox(height: 5),
-          const TextLabel(text: "Linguagens preferidas"),
-          Column(
-              children: languageOption
-                  .map((language) => CheckboxListTile(
-                      title: Text(language),
-                      selected: false,
-                      value: selectedLanguage.contains(language),
-                      onChanged: (bool? value) {
-                        if (value!) {
+                    }),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextButton(
+                    onPressed: () {
+                      setState(() {
+                        saving = false;
+                      });
+                      String snackbarText = VERIFY_DATA;
+                      if (generalVerification(context, formFields)) {
+                        setState(() {
+                          snackbarText = SUCCESS;
+                          saving = true;
+                        });
+                        Future.delayed(const Duration(seconds: 3), () {
                           setState(() {
-                            selectedLanguage.add(language);
+                            saving = false;
                           });
-                        } else {
-                          setState(() {
-                            selectedLanguage.remove(language);
-                          });
-                        }
-                      }))
-                  .toList()),
-          const TextLabel(text: "Tempo de experiência"),
-          DropdownButton(
-              value: timeExperience,
-              isExpanded: true,
-              items: const [
-                DropdownMenuItem(value: 1, child: Text("1")),
-                DropdownMenuItem(value: 2, child: Text("2")),
-                DropdownMenuItem(value: 3, child: Text("3")),
-                DropdownMenuItem(value: 4, child: Text("4")),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  timeExperience = int.parse(value.toString());
-                });
-              }),
-          TextLabel(
-              text:
-                  "Pretensão Salaria: R\$ ${selectedSalary.round().toString()}"),
-          Slider(
-              min: 0,
-              max: 10000,
-              value: selectedSalary,
-              onChanged: (double value) {
-                setState(() {
-                  selectedSalary = value;
-                });
-              }),
-          TextButton(
-              onPressed: () {
-                debugPrint(nameController.text);
-                debugPrint(lastNameController.text);
-                debugPrint(callendarController.text);
-                debugPrint(currentSelected.toString());
-                String items = "Lang:";
-                for (var lang in selectedLanguage) {
-                  items += " $lang,";
-                }
-                debugPrint(items);
-                debugPrint("R\$ ${selectedSalary.round()},00");
-              },
-              child: const Text("Salvar")),
-        ]),
+                        });
+                      }
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(snackbarText)));
+                    },
+                    child: const Text("Salvar")),
+              ]),
       ),
     );
   }
