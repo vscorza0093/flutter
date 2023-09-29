@@ -2,7 +2,7 @@ import 'package:teladelogin/model/card_model.dart';
 
 class CardDetailRepository {
   Future<CardModel> get() async {
-    await Future.delayed(const Duration(milliseconds: 1900));
+    await Future.delayed(const Duration(milliseconds: 300));
     return CardModel(
         1,
         "Meu Card",

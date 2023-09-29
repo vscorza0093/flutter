@@ -5,6 +5,7 @@ import 'package:teladelogin/pages/repositories/level_repository.dart';
 import 'package:teladelogin/shared/widgets/callendar_text_field.dart';
 import 'package:teladelogin/shared/widgets/simple_text_field.dart';
 import 'package:teladelogin/shared/widgets/text_label.dart';
+import 'package:teladelogin/const_variables.dart';
 
 import 'package:teladelogin/shared/methods/methods.dart';
 
@@ -24,9 +25,6 @@ class _UserInfoState extends State<UserInfo> {
 
   var experienceMenuOptions = [];
   var languageOption = [];
-
-  static const VERIFY_DATA = "Verifique os dados inseridos";
-  static const SUCCESS = "Dados salvos com sucesso";
 
   FormFields formFields = FormFields(
       TextEditingController(text: ""),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teladelogin/pages/sub-pages/card_home_page.dart';
-import 'package:teladelogin/pages/sub-pages/card_data_page.dart';
-import 'package:teladelogin/pages/sub-pages/card_device_page.dart';
+import 'package:teladelogin/pages/sub-pages/card_images_page.dart';
+import 'package:teladelogin/pages/sub-pages/card_device_page_list_view.dart';
+import 'package:teladelogin/pages/sub-pages/list_view_horizontal.dart';
 import 'package:teladelogin/shared/widgets/custom_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,12 +37,14 @@ class _HomePageState extends State<HomePage> {
               },
               children: const [
                 CardHome(),
-                CardData(),
-                CardDevice(),
+                CardImages(),
+                CardDeviceVerticalListView(),
+                CardHorizontalListView(),
               ],
             ),
           ),
           BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               currentIndex: currentPage,
               onTap: (value) {
                 pageController.jumpToPage(value);
@@ -52,6 +55,8 @@ class _HomePageState extends State<HomePage> {
                     label: "Data", icon: Icon(Icons.data_array_sharp)),
                 BottomNavigationBarItem(
                     label: "Devices", icon: Icon(Icons.usb)),
+                BottomNavigationBarItem(
+                    label: "New", icon: Icon(Icons.new_label)),
               ])
         ],
       ),

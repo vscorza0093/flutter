@@ -167,8 +167,8 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 15),
                       ),
                       onPressed: () {
-                        if (emailController.text == 'v' &&
-                            passwordController.text.trim() == 'v') {
+                        if (emailController.text == '' &&
+                            passwordController.text.trim() == '') {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
