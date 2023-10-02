@@ -14,7 +14,7 @@ class CardDeviceVerticalListView extends StatelessWidget {
             ListTile(
               leading: Image.asset(AppImages.image1),
               title: const Text(
-                "Mi(ngi), Diablo e Sleep Token",
+                "Diablo e Sleep Token",
                 style: TextStyle(fontSize: 18),
               ),
               subtitle: Row(
@@ -49,8 +49,6 @@ class CardDeviceVerticalListView extends StatelessWidget {
             Image.asset(AppImages.image1),
             Image.asset(AppImages.image2),
             Image.asset(AppImages.image3),
-            Image.asset('assets/images/mi.png'),
-            Image.asset('assets/images/mingi-ateez.gif'),
             Image.asset(AppImages.image4),
           ],
         ),

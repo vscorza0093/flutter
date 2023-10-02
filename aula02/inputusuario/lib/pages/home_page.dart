@@ -4,6 +4,7 @@ import 'package:teladelogin/pages/sub-pages/card_images_page.dart';
 import 'package:teladelogin/pages/sub-pages/card_device_page_list_view.dart';
 import 'package:teladelogin/pages/sub-pages/list_view_horizontal.dart';
 import 'package:teladelogin/shared/widgets/custom_drawer.dart';
+import 'package:teladelogin/pages/task_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,6 +41,7 @@ class _HomePageState extends State<HomePage> {
                 CardImages(),
                 CardDeviceVerticalListView(),
                 CardHorizontalListView(),
+                TaskPage(),
               ],
             ),
           ),
@@ -56,7 +58,9 @@ class _HomePageState extends State<HomePage> {
                 BottomNavigationBarItem(
                     label: "Devices", icon: Icon(Icons.usb)),
                 BottomNavigationBarItem(
-                    label: "New", icon: Icon(Icons.new_label)),
+                    label: "Horizontal",
+                    icon: Icon(Icons.horizontal_distribute)),
+                BottomNavigationBarItem(label: "Tasks", icon: Icon(Icons.list))
               ])
         ],
       ),
