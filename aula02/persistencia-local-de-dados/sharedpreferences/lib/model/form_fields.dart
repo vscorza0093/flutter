@@ -7,6 +7,7 @@ class FormFields {
   List<String> selectedLanguage = <String>[];
   String selectedExperience = '';
   double selectedSalary = 0;
+  int experienceTime = 0;
 
   FormFields(
       this.nameController,
@@ -14,5 +15,6 @@ class FormFields {
       this.callendarController,
       this.selectedLanguage,
       this.selectedExperience,
-      this.selectedSalary);
+      this.selectedSalary,
+      this.experienceTime);
 }

@@ -48,8 +48,6 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
     Navigator.pop(context);
   }
 
-  void catchInvalidHeight() {}
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

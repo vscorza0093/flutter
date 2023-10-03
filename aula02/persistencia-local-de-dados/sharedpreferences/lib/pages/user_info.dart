@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teladelogin/model/form_fields.dart';
 import 'package:teladelogin/pages/repositories/language_repository.dart';
 import 'package:teladelogin/pages/repositories/level_repository.dart';
@@ -17,10 +20,11 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
+  late SharedPreferences sharedPreferences;
+
   LevelRepository levelRepository = LevelRepository();
   LanguageRepository languageRepository = LanguageRepository();
 
-  int timeExperience = 1;
   bool saving = false;
 
   var experienceMenuOptions = [];
@@ -32,17 +36,58 @@ class _UserInfoState extends State<UserInfo> {
       TextEditingController(text: ""),
       <String>[],
       '',
-      0);
+      0,
+      1);
 
   @override
   void initState() {
     experienceMenuOptions = levelRepository.getKnowledgeList();
     languageOption = languageRepository.getLanguageList();
+    loadData();
     super.initState();
+  }
+
+  void loadData() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    formFields.nameController.text =
+        sharedPreferences.getString(FIRST_NAME) ?? "";
+    formFields.lastNameController.text =
+        sharedPreferences.getString(LAST_NAME) ?? "";
+    formFields.selectedSalary =
+        sharedPreferences.getDouble(SALARY_EXPECTATION) ?? 0.0;
+    formFields.selectedExperience =
+        sharedPreferences.getString(EXPERIENCE_LEVEL) ?? "";
+    formFields.selectedLanguage =
+        sharedPreferences.getStringList(FAVORITE_LANGUAGE) ?? [];
+    formFields.callendarController.text =
+        sharedPreferences.getString(DATE_OF_BIRTH).toString();
+    formFields.experienceTime = sharedPreferences.getInt(EXPERIENCE_TIME) ?? 0;
+    setState(() {});
   }
 
   void closeKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
+    closePage();
+  }
+
+  void closePage() {
+    Navigator.pop(context);
+  }
+
+  void saveSharedPreferences() async {
+    await sharedPreferences.setString(
+        FIRST_NAME, formFields.nameController.text);
+    await sharedPreferences.setString(
+        LAST_NAME, formFields.lastNameController.text);
+    await sharedPreferences.setString(
+        DATE_OF_BIRTH, formFields.callendarController.text);
+    await sharedPreferences.setDouble(
+        SALARY_EXPECTATION, formFields.selectedSalary);
+    await sharedPreferences.setString(
+        EXPERIENCE_LEVEL, formFields.selectedExperience);
+    await sharedPreferences.setStringList(
+        FAVORITE_LANGUAGE, formFields.selectedLanguage);
+    await sharedPreferences.setInt(EXPERIENCE_TIME, formFields.experienceTime);
   }
 
   @override
@@ -50,9 +95,6 @@ class _UserInfoState extends State<UserInfo> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dados cadastrais"),
-        actions: [
-          
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -127,12 +169,12 @@ class _UserInfoState extends State<UserInfo> {
                   text: "Tempo de experiência",
                 ),
                 DropdownButton(
-                    value: timeExperience,
+                    value: formFields.experienceTime,
                     isExpanded: true,
                     items: menuItems(30),
                     onChanged: (value) {
                       setState(() {
-                        timeExperience = int.parse(value.toString());
+                        formFields.experienceTime = int.parse(value.toString());
                       });
                     }),
                 const SizedBox(
@@ -146,6 +188,7 @@ class _UserInfoState extends State<UserInfo> {
                       String snackbarText = VERIFY_DATA;
                       if (generalVerification(context, formFields)) {
                         setState(() {
+                          saveSharedPreferences();
                           snackbarText = SUCCESS;
                           saving = true;
                         });
