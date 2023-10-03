@@ -13,7 +13,7 @@ class _CardImagesState extends State<CardImages> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: const Color.fromARGB(255, 50, 50, 50),
+        color: const Color.fromARGB(255, 222, 222, 222),
         child: Column(
           children: [
             Image.asset(

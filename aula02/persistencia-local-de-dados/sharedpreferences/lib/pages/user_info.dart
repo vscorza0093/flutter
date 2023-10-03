@@ -41,11 +41,18 @@ class _UserInfoState extends State<UserInfo> {
     super.initState();
   }
 
+  void closeKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Dados cadastrais"),
+        actions: [
+          
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

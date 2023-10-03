@@ -23,12 +23,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.red),
+            const SystemUiOverlayStyle(statusBarColor: Colors.black),
         backgroundColor: Colors.orange,
         title: const Text("Perfil"),
       ),
       drawer: const CustomDrawer(),
-      backgroundColor: const Color(0xff151515),
+      backgroundColor: const Color.fromARGB(255, 222, 222, 222),
       body: Column(
         children: [
           Expanded(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:teladelogin/pages/configs_page.dart';
 import 'package:teladelogin/pages/login_page.dart';
 import 'package:teladelogin/pages/num_generator_page.dart';
 import 'package:teladelogin/pages/user_info.dart';
@@ -182,7 +183,13 @@ class CustomDrawer extends StatelessWidget {
         ),
         Center(
           child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ConfigurationsPage()));
+              },
               child: Container(
                 width: double.infinity,
                 padding:

@@ -26,6 +26,10 @@ class _LoginPageState extends State<LoginPage> {
     isObscureText = true;
   }
 
+  void closeKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -170,6 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         if (emailController.text == '' &&
                             passwordController.text.trim() == '') {
+                          closeKeyboard();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

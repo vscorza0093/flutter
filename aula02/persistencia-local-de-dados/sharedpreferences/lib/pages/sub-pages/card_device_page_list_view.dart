@@ -8,7 +8,7 @@ class CardDeviceVerticalListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 80, 80, 80),
+        backgroundColor: const Color.fromARGB(255, 222, 222, 222),
         body: ListView(
           children: [
             ListTile(
