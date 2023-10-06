@@ -1,7 +1,14 @@
+import 'dart:io';
+import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:teladelogin/pages/login_page.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory documentsDirectory =
+      await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(documentsDirectory.path);
   runApp(const MyApp());
 }
 

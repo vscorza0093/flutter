@@ -1,15 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teladelogin/model/form_fields.dart';
 import 'package:teladelogin/pages/repositories/language_repository.dart';
 import 'package:teladelogin/pages/repositories/level_repository.dart';
+import 'package:teladelogin/services/app_storage_service.dart';
 import 'package:teladelogin/shared/widgets/callendar_text_field.dart';
 import 'package:teladelogin/shared/widgets/simple_text_field.dart';
 import 'package:teladelogin/shared/widgets/text_label.dart';
 import 'package:teladelogin/const_variables.dart';
-
 import 'package:teladelogin/shared/methods/methods.dart';
 
 class UserInfo extends StatefulWidget {
@@ -20,7 +18,7 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
-  late SharedPreferences sharedPreferences;
+  AppStorageService appStorageService = AppStorageService();
 
   LevelRepository levelRepository = LevelRepository();
   LanguageRepository languageRepository = LanguageRepository();
@@ -48,20 +46,30 @@ class _UserInfoState extends State<UserInfo> {
   }
 
   void loadData() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    formFields.nameController.text =
-        sharedPreferences.getString(FIRST_NAME) ?? "";
+    // Recebendo um Future<String>
+    formFields.nameController.text = await appStorageService.getUserInfoName();
+
     formFields.lastNameController.text =
-        sharedPreferences.getString(LAST_NAME) ?? "";
-    formFields.selectedSalary =
-        sharedPreferences.getDouble(SALARY_EXPECTATION) ?? 0.0;
+        await appStorageService.getUserInfoLastName();
+
+    formFields.selectedSalary = await appStorageService.getUserInfoSalary();
+
     formFields.selectedExperience =
-        sharedPreferences.getString(EXPERIENCE_LEVEL) ?? "";
+        await appStorageService.getUserInfoExperienceLevel();
+
     formFields.selectedLanguage =
-        sharedPreferences.getStringList(FAVORITE_LANGUAGE) ?? [];
+        await appStorageService.getUserInfoFavoriteLanguages();
+
+    if (formFields.callendarController.text.isNotEmpty) {
+      DateTime.parse(formFields.callendarController.text);
+    }
+
     formFields.callendarController.text =
-        sharedPreferences.getString(DATE_OF_BIRTH).toString();
-    formFields.experienceTime = sharedPreferences.getInt(EXPERIENCE_TIME) ?? 0;
+        await appStorageService.getUserInfoBirthDay();
+
+    formFields.experienceTime =
+        await appStorageService.getUserInfoExperienceTime();
+
     setState(() {});
   }
 
@@ -75,19 +83,26 @@ class _UserInfoState extends State<UserInfo> {
   }
 
   void saveSharedPreferences() async {
-    await sharedPreferences.setString(
-        FIRST_NAME, formFields.nameController.text);
-    await sharedPreferences.setString(
-        LAST_NAME, formFields.lastNameController.text);
-    await sharedPreferences.setString(
-        DATE_OF_BIRTH, formFields.callendarController.text);
-    await sharedPreferences.setDouble(
-        SALARY_EXPECTATION, formFields.selectedSalary);
-    await sharedPreferences.setString(
-        EXPERIENCE_LEVEL, formFields.selectedExperience);
-    await sharedPreferences.setStringList(
-        FAVORITE_LANGUAGE, formFields.selectedLanguage);
-    await sharedPreferences.setInt(EXPERIENCE_TIME, formFields.experienceTime);
+    await appStorageService.setUserInfoName(formFields.nameController.text);
+    await appStorageService
+        .setUserInfoLastName(formFields.lastNameController.text);
+
+    if (formFields.callendarController.text.isNotEmpty) {
+      await appStorageService.setUserInfoBirthDay(
+          DateTime.parse(formFields.callendarController.text));
+    }
+
+    await appStorageService
+        .setUserInfoSalaryExpactation(formFields.selectedSalary);
+
+    await appStorageService
+        .setUserInfoExperienceLevel(formFields.selectedExperience.toString());
+
+    await appStorageService
+        .setUserInfoFavoriteLanguage(formFields.selectedLanguage);
+
+    await appStorageService
+        .setUserInfoExperienceTime(formFields.experienceTime);
   }
 
   @override

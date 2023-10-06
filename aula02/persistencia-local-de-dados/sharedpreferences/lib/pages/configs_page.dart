@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:teladelogin/const_variables.dart';
+import 'package:teladelogin/model/configurations_model.dart';
+import 'package:teladelogin/pages/repositories/configs_repository.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({super.key});
@@ -10,16 +10,13 @@ class ConfigurationsPage extends StatefulWidget {
 }
 
 class _ConfigurationsPageState extends State<ConfigurationsPage> {
-  late SharedPreferences sharedPreferences;
+  late ConfigRepository configRepository;
+
+  ConfigurationsModel configurationsModel = ConfigurationsModel.empty();
 
   TextEditingController userNameController = TextEditingController();
   TextEditingController userHeightController = TextEditingController();
-  TextEditingController darkModeController = TextEditingController();
-  TextEditingController receiveNotificationController = TextEditingController();
 
-  String? userName;
-  double? userHeight;
-  double? weight;
   bool receiveNotification = false;
   bool darkMode = false;
 
@@ -30,14 +27,13 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   }
 
   void loadData() async {
-    sharedPreferences = await SharedPreferences.getInstance();
+    configRepository = await ConfigRepository.loadAsyncConfigRepository();
+    configurationsModel = configRepository.obtainData();
+    userNameController.text = configurationsModel.getUserName();
+    userHeightController.text = configurationsModel.getUserHeight().toString();
+    darkMode = configurationsModel.getDarkMode();
+    receiveNotification = configurationsModel.getReceiveNotification();
     setState(() {});
-    userNameController.text = sharedPreferences.getString(USER_NAME_KEY) ?? "";
-    userHeightController.text =
-        (sharedPreferences.getDouble(USER_HEIGHT_KEY) ?? 0.0).toString();
-    darkMode = sharedPreferences.getBool(DARK_MODE_KEY) ?? false;
-    receiveNotification =
-        sharedPreferences.getBool(RECEIVE_NOTIFICATION_KEY) ?? false;
   }
 
   void closeKeyboard() {
@@ -56,6 +52,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
       home: Scaffold(
         appBar: AppBar(title: const Text("Configurações")),
         body: Container(
+          padding: const EdgeInsets.all(2.0),
           child: ListView(
             children: [
               const SizedBox(
@@ -109,7 +106,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
               TextButton(
                   onPressed: () async {
                     try {
-                      await sharedPreferences.setDouble(USER_HEIGHT_KEY,
+                      configurationsModel.setUserHeight(
                           double.parse(userHeightController.text));
                     } catch (e) {
                       // ignore: use_build_context_synchronously
@@ -131,11 +128,13 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                           });
                       return;
                     }
-                    await sharedPreferences.setString(
-                        USER_NAME_KEY, userNameController.text);
-                    await sharedPreferences.setBool(DARK_MODE_KEY, darkMode);
-                    await sharedPreferences.setBool(
-                        RECEIVE_NOTIFICATION_KEY, receiveNotification);
+                    configurationsModel.setUserName(userNameController.text);
+                    configurationsModel.setDarkMode(darkMode);
+                    configurationsModel
+                        .setReceiveNotification(receiveNotification);
+
+                    configRepository.saveConfigurations(configurationsModel);
+                    closeKeyboard();
                     closePage();
                   },
                   child: const Text("SALVAR"))

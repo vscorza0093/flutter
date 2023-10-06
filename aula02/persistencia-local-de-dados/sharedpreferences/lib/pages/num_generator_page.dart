@@ -1,7 +1,6 @@
 import 'dart:math';
-
+import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teladelogin/const_variables.dart';
 
 class NumGeneratorPage extends StatefulWidget {
@@ -14,7 +13,7 @@ class NumGeneratorPage extends StatefulWidget {
 class _NumGeneratorPageState extends State<NumGeneratorPage> {
   int? generatedNumber = 0;
   int? clickQuantity = 0;
-  late SharedPreferences storageInstance;
+  late Box boxRandomNumbers;
 
   @override
   void initState() {
@@ -23,10 +22,16 @@ class _NumGeneratorPageState extends State<NumGeneratorPage> {
   }
 
   void loadData() async {
-    storageInstance = await SharedPreferences.getInstance();
+    if (Hive.isBoxOpen('box_random_numbers')) {
+      boxRandomNumbers = Hive.box('box_random_numbers');
+    } else {
+      boxRandomNumbers = await Hive.openBox('box_random_numbers');
+    }
+
+    generatedNumber = boxRandomNumbers.get(RANDOM_NUM_STORAGE_KEY);
+    clickQuantity = boxRandomNumbers.get(CLICK_QUANTITY_KEY);
+
     setState(() {});
-    generatedNumber = storageInstance.getInt(RANDOM_NUM_STORAGE_KEY);
-    clickQuantity = storageInstance.getInt(CLICK_QUANTITY_KEY);
   }
 
   @override
@@ -55,15 +60,13 @@ class _NumGeneratorPageState extends State<NumGeneratorPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          storageInstance = await SharedPreferences.getInstance();
-
           Random rand = Random();
           setState(() {
             generatedNumber = rand.nextInt(9999);
             clickQuantity = (clickQuantity ?? 0) + 1;
           });
-          storageInstance.setInt(RANDOM_NUM_STORAGE_KEY, generatedNumber!);
-          storageInstance.setInt(CLICK_QUANTITY_KEY, clickQuantity!);
+          boxRandomNumbers.put(RANDOM_NUM_STORAGE_KEY, generatedNumber);
+          boxRandomNumbers.put(CLICK_QUANTITY_KEY, clickQuantity);
         },
         child: const Icon(Icons.add),
       ),

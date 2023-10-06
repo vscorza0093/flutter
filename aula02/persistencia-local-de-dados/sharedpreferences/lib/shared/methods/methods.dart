@@ -88,6 +88,8 @@ void persistData(
     String selectedExperience,
     double selectedSalary) {}
 
+  
+
 bool generalVerification(BuildContext context, FormFields formFields) {
   return (nameVerification(formFields.nameController, context) &&
       lastNameVerification(formFields.lastNameController, context) &&
