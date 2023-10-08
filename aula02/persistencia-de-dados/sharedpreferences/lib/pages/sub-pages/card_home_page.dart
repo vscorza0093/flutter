@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teladelogin/model/card_model.dart';
 import 'package:teladelogin/pages/card_detail.dart';
-import 'package:teladelogin/pages/repositories/card_detail_repository.dart';
+import 'package:teladelogin/repositories/card_detail_repository.dart';
 
 class CardHome extends StatefulWidget {
   const CardHome({super.key});

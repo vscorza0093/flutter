@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teladelogin/model/configurations_model.dart';
-import 'package:teladelogin/pages/repositories/configs_repository.dart';
+import 'package:teladelogin/repositories/configs_repository.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({super.key});

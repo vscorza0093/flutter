@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:teladelogin/pages/configs_page.dart';
 import 'package:teladelogin/pages/login_page.dart';
 import 'package:teladelogin/pages/num_generator_page.dart';
-import 'package:teladelogin/pages/user_info.dart';
+import 'package:teladelogin/pages/user_info/user_info_hive_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});

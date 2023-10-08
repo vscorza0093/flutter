@@ -53,3 +53,59 @@ macOS	NSUserDefaults
 Web	    LocalStorage
 Windows	In the roaming AppData directory
 ```
+
+
+## Armazenamento com Hive db
+
+Instalação do Hive em dependencies
+
+Anotações a serem feitas sobre o banco de dados Hive, sua instalação no flutter, sua sintaxe
+
+
+### Hive Adapter
+
+Istalação do hive_generator em dev_dependencies.
+
+Hive adapter, a criação de uma classe que herda de HiveObject, o uso de anotações `@HiveType(int id)`e `HiveField(int id)` para gerar um `TypeAdapter<t>` para dar suporte a tipos não primitivos, facilitando o controle e acesso desses tipos
+
+
+### Build Runner
+
+Instalação do build_runner em dev_dependencies.
+
+Build runner, um pacote que provém comandos de uso geral de uma forma bem concreta para gerar arquivos.
+
+Os arquivos serão sempre gerados diretamente no espaço de armazenamento e rebuilds são apenas incrementais.
+
+Funciona como pacotes que usam o sistema de build do Dart para gerar arquivos de saída a partir de arquivos de entrada.
+
+Para realizar o build deveremos adicionar uma linha de código em nosso arquivo, utilizando a palavra reservada `part`[1], que é primordialmente utilizada para a geração de arquivos, inserindo o nome do nosso código e adicionando a extensão `.g` antes da extensão `.dart`:
+
+```dart
+part 'build_runner_test.g.dart';
+
+Class BuildRunnerTest {
+    BuildRunnerTest();
+}
+```
+Em seguida, utilizamos o comando `dart run build_runner build` e nosso arquivo `build_runner_test.g.dart` será gerado na mesma pasta que se encontra `build_runner_test.dart`
+
+Adicionar o arquivo gerado utilizando a classe Hive o método registerAdapter, passando a classe que será gerada a partir do nosso código
+
+Pode ser útil instalar o pacote `analyzer` para verificação de erros, limpeza de cache e outras ações que podem ser úteis para o bom funcionamento dos builds
+
+Comandos como `flutter clean`, `flutter pub cache repair` e `flutter pub run build_runner clean` irão nos auxiliar nessas situações
+
+
+
+
+
+
+
+
+
+
+
+Bibliografia
+
+[1] Flutter keywords - https://dart.dev/guides/libraries/create-packages#organizing-a-package

@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:teladelogin/model/form_fields.dart';
-import 'package:teladelogin/pages/repositories/language_repository.dart';
-import 'package:teladelogin/pages/repositories/level_repository.dart';
-import 'package:teladelogin/services/app_storage_service.dart';
+import 'package:teladelogin/model/user_info_model.dart';
+import 'package:teladelogin/repositories/language_repository.dart';
+import 'package:teladelogin/repositories/level_repository.dart';
+import 'package:teladelogin/repositories/user_info_repository.dart';
 import 'package:teladelogin/shared/widgets/callendar_text_field.dart';
 import 'package:teladelogin/shared/widgets/simple_text_field.dart';
 import 'package:teladelogin/shared/widgets/text_label.dart';
@@ -18,8 +19,9 @@ class UserInfo extends StatefulWidget {
 }
 
 class _UserInfoState extends State<UserInfo> {
-  AppStorageService appStorageService = AppStorageService();
+  late UserInfoRepository userInfoRepository;
 
+  UserInfoModel userInfoModel = UserInfoModel.emptyParams();
   LevelRepository levelRepository = LevelRepository();
   LanguageRepository languageRepository = LanguageRepository();
 
@@ -47,28 +49,27 @@ class _UserInfoState extends State<UserInfo> {
 
   void loadData() async {
     // Recebendo um Future<String>
-    formFields.nameController.text = await appStorageService.getUserInfoName();
+    userInfoRepository =
+        await UserInfoRepository.loadAsyncUserInfoORepository();
 
-    formFields.lastNameController.text =
-        await appStorageService.getUserInfoLastName();
+    userInfoModel = userInfoRepository.obtainData();
 
-    formFields.selectedSalary = await appStorageService.getUserInfoSalary();
+    formFields.nameController.text = userInfoModel.name ?? "";
 
-    formFields.selectedExperience =
-        await appStorageService.getUserInfoExperienceLevel();
+    formFields.lastNameController.text = userInfoModel.lastName ?? "";
 
-    formFields.selectedLanguage =
-        await appStorageService.getUserInfoFavoriteLanguages();
+    formFields.selectedSalary = userInfoModel.salaryExpectation ?? 0;
+
+    formFields.selectedExperience = userInfoModel.experienceLevel ?? "";
+
+    formFields.selectedLanguage = userInfoModel.favoriteLanguages;
 
     if (formFields.callendarController.text.isNotEmpty) {
       DateTime.parse(formFields.callendarController.text);
     }
+    formFields.callendarController.text = userInfoModel.birthday ?? "";
 
-    formFields.callendarController.text =
-        await appStorageService.getUserInfoBirthDay();
-
-    formFields.experienceTime =
-        await appStorageService.getUserInfoExperienceTime();
+    formFields.experienceTime = userInfoModel.experienceTime ?? 0;
 
     setState(() {});
   }
@@ -82,27 +83,8 @@ class _UserInfoState extends State<UserInfo> {
     Navigator.pop(context);
   }
 
-  void saveSharedPreferences() async {
-    await appStorageService.setUserInfoName(formFields.nameController.text);
-    await appStorageService
-        .setUserInfoLastName(formFields.lastNameController.text);
-
-    if (formFields.callendarController.text.isNotEmpty) {
-      await appStorageService.setUserInfoBirthDay(
-          DateTime.parse(formFields.callendarController.text));
-    }
-
-    await appStorageService
-        .setUserInfoSalaryExpactation(formFields.selectedSalary);
-
-    await appStorageService
-        .setUserInfoExperienceLevel(formFields.selectedExperience.toString());
-
-    await appStorageService
-        .setUserInfoFavoriteLanguage(formFields.selectedLanguage);
-
-    await appStorageService
-        .setUserInfoExperienceTime(formFields.experienceTime);
+  void saveData() async {
+    userInfoRepository.saveUserInfo(userInfoModel);
   }
 
   @override
@@ -203,7 +185,7 @@ class _UserInfoState extends State<UserInfo> {
                       String snackbarText = VERIFY_DATA;
                       if (generalVerification(context, formFields)) {
                         setState(() {
-                          saveSharedPreferences();
+                          userInfoRepository.saveUserInfo(userInfoModel);
                           snackbarText = SUCCESS;
                           saving = true;
                         });

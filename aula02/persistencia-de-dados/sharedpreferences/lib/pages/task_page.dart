@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teladelogin/model/task.dart';
-import 'package:teladelogin/pages/repositories/task_repository.dart';
+import 'package:teladelogin/model/task_sqlite_model.dart';
+import 'package:teladelogin/repositories/sqlite/task_sqlite_repository.dart';
+import 'package:teladelogin/repositories/task_repository.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -12,8 +14,10 @@ class TaskPage extends StatefulWidget {
 class _TaskPageState extends State<TaskPage> {
   bool notConcluded = false;
 
-  List<Task> _listOfTasks = const <Task>[];
+  var _tasksSQLiteModel = const <TaskSQLiteModel>[];
+  var _listOfTasks = const <Task>[];
   TextEditingController descriptionController = TextEditingController();
+  TaskSQLiteRepository taskSQLiteRepository = TaskSQLiteRepository();
   TaskRepository taskRepository = TaskRepository();
 
   @override
@@ -23,15 +27,13 @@ class _TaskPageState extends State<TaskPage> {
   }
 
   void obtainTask() async {
-    if (notConcluded) {
-      _listOfTasks = await taskRepository.listNotConcluded();
-    } else {
-      _listOfTasks = await taskRepository.getTasks();
-    }
+    _listOfTasks = await taskRepository.getTasks();
+    _tasksSQLiteModel = await taskSQLiteRepository.obtainData();
     setState(() {});
   }
 
   void closePage() {
+    setState(() {});
     Navigator.pop(context);
   }
 
@@ -61,9 +63,10 @@ class _TaskPageState extends State<TaskPage> {
                           onPressed: () async {
                             await taskRepository.addTask(
                                 Task(descriptionController.text, false));
+                            await taskSQLiteRepository.saveData(TaskSQLiteModel(
+                                0, descriptionController.text, false));
                             debugPrint(descriptionController.text);
                             closePage();
-                            setState(() {});
                             descriptionController.text = '';
                           },
                           child: const Text("Salvar"))
@@ -107,16 +110,21 @@ class _TaskPageState extends State<TaskPage> {
                       return Dismissible(
                         onDismissed: (DismissDirection dismissDirection) async {
                           await taskRepository.removeTask(task.getId);
+                          await taskSQLiteRepository
+                              .removeData(int.parse(task.getId));
                           obtainTask();
+                          setState(() {});
                         },
-                        key: Key(task.getId),
+                        key: Key(task.getId.toString()),
                         child: ListTile(
                           title: Text(task.getDescription),
                           trailing: Switch(
                               value: task.getConcluded,
                               onChanged: (bool value) async {
                                 await taskRepository.updateTask(
-                                    task.getId, value);
+                                    task.getId, task.getConcluded);
+                                await taskSQLiteRepository
+                                    .updateData(_tasksSQLiteModel[index]);
                                 obtainTask();
                               }),
                         ),
