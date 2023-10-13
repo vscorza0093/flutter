@@ -80,7 +80,6 @@ class _LoginPageState extends State<LoginPage> {
                 height: 35,
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 padding: const EdgeInsets.only(left: 3, top: 2),
-                color: const Color.fromARGB(255, 50, 50, 50),
                 child: TextField(
                   onTap: () {
                     if (!isEmailFieldFirstTimeClicked) {
@@ -115,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(left: 3, top: 2),
                 color: const Color.fromARGB(255, 50, 50, 50),
                 child: TextFormField(
-                  controller: passwordController,
+                  controller: passwordController, 
                   obscureText: isObscureText,
                   style: GoogleFonts.roboto(color: Colors.white),
                   decoration: InputDecoration(
