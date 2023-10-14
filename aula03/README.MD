@@ -82,6 +82,39 @@ body: ListView.builder(
 
 Outro pacote de chamadas HTTP em Flutter é o Dio. É um pacote muito bem visto pela comunidade do Flutter.
 
+Não é um pacote criado pela equipe do Flutter, porém é um pacote de simples utilização.
+
+Tem suporte para `Interceptors`, `Global configuration`, `FormData`, `Request Cancellation`, `File downloading`, `Timeout` e muitos outros serviços.
+
+Sua instalação é feita na dependencies, passando `dio: ^version`
+
+Possui um tratamento padrão na utilização do método get, onde toda requisição entra em um bloco `try, catch` e qualquer status code diferente de 200 cairá no catch, printando a exceção lançada.
+
+alguns exemplos de utilização
+```dart
+var dio = Dio();
+
+// Post Request
+response = await dio.post('/test', data: {'id': 12, 'name': 'wendu'});
+
+// Multiple concurrent request
+response = await Future.wait([dio.post('/info'), dio.get('/token')]);
+
+// Downloading a file:
+response = await dio.download('https://www.googe.com/', './abc.html');
+```
+
+Existem outros para uploading, stream, bytes, FormData e muitas outras opções.
+
+Também podemos aplicar opções de url base, timeout de conexão e timeout de recebimento no momento de instanciar nosso objeto.
+
+
+
+
+
+
+
+
 
 ### Dotenv
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:protocolohttp/model/comment_model.dart';
-import 'package:protocolohttp/repositories/comments_repository.dart';
+import 'package:protocolohttp/repositories/comments/comments_repository_abstract.dart';
+import 'package:protocolohttp/repositories/comments/dio/dio_comments_repository.dart';
+// import 'package:protocolohttp/repositories/comments/http/http_comments_repository.dart';
 
 class CommentsPage extends StatefulWidget {
   final int postId;
@@ -12,12 +14,11 @@ class CommentsPage extends StatefulWidget {
 }
 
 class _CommentsPageState extends State<CommentsPage> {
-  CommentsRepository commentsRepository = CommentsRepository();
+  CommentsRepository commentsRepository = DioCommentsRepository();
   List<CommentModel> commentsList = <CommentModel>[];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadComments();
   }

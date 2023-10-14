@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:protocolohttp/model/post_model.dart';
+import 'package:protocolohttp/repositories/posts/posts_repository_abstract.dart';
 
-class PostRepository {
+class HTTPPostRepository implements PostRepository {
+  @override
   Future<List<PostModel>> getPosts() async {
     var response =
         await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:protocolohttp/model/post_model.dart';
 import 'package:protocolohttp/pages/comments_page.dart';
-import 'package:protocolohttp/repositories/post_repository.dart';
+import 'package:protocolohttp/repositories/posts/dio/dio_post_repository.dart';
+// import 'package:protocolohttp/repositories/posts/http/http_post_repository.dart';
+import 'package:protocolohttp/repositories/posts/posts_repository_abstract.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -12,7 +14,7 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  PostRepository postRepository = PostRepository();
+  PostRepository postRepository = DioPostRepository();
   List<PostModel> postList = <PostModel>[];
 
   @override
