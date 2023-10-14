@@ -3,7 +3,7 @@ import 'package:protocolohttp/pages/card_page.dart';
 import 'package:protocolohttp/pages/tarefa_page/tarefa_sqlite_page.dart';
 import 'package:protocolohttp/pages/consulta_cep.dart';
 
-import '../shared/widgets/custon_drawer.dart';
+import '../shared/widgets/custom_drawer.dart';
 import 'image_assets.dart';
 import 'list_view.dart';
 import 'list_view_horizontal.dart';

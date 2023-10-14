@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:protocolohttp/pages/login_page.dart';
+import 'package:protocolohttp/pages/post_page.dart';
 import '../../pages/configuracoes/configuracoes_hive_page.dart';
 import '../../pages/dados_cadastrais/dados_cadastrais_hive.dart';
 import '../../pages/numeros_aleatorios/numeros_aleatorios_hive_page.dart';
@@ -157,6 +158,30 @@ class CustonDrawer extends StatelessWidget {
                 width: double.infinity,
                 child: const Row(
                   children: [
+                    Icon(Icons.post_add),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text("Novo post"),
+                  ],
+                )),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (bc) => const PostPage()));
+            },
+          ),
+          const Divider(),
+          const SizedBox(
+            height: 10,
+          ),
+          InkWell(
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                child: const Row(
+                  children: [
                     Icon(Icons.album),
                     SizedBox(
                       width: 5,
@@ -171,10 +196,6 @@ class CustonDrawer extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (bc) => const ConfiguracoesHivePage()));
             },
-          ),
-          const Divider(),
-          const SizedBox(
-            height: 10,
           ),
           InkWell(
             child: Container(

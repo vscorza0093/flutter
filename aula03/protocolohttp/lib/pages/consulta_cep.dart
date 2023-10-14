@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:protocolohttp/model/via_cep_model.dart';
 import 'package:protocolohttp/repositories/via_cep_repository.dart';
 
