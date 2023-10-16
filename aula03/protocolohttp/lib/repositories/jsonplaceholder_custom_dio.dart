@@ -9,3 +9,5 @@ class JsonPlaceholderCustomDio {
 
   Dio get baseUrl => _dio;
 }
+
+
