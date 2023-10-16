@@ -109,13 +109,6 @@ Existem outros para uploading, stream, bytes, FormData e muitas outras opções.
 Também podemos aplicar opções de url base, timeout de conexão e timeout de recebimento no momento de instanciar nosso objeto.
 
 
-
-
-
-
-
-
-
 ### Dotenv
 
 Dotenv é um pacote muito conhecido no meio do desenvolvimento, que nos possibilita criar variáveis dentro de arquivos e usar essas variáveis dentro de nossa aplicação, funcionam como variáveis de ambiente.
@@ -128,7 +121,22 @@ Isso possibilita que, num ambiente com muitos desenvolvedores, cada desenvolvedo
 
 
 
+## APIs autenticadas em Flutter
 
+### Autenticação e autorização
+
+A autorização e a autenticação se referem a parte de segurança, não só de APIs como páginas web.
+
+A autenticação diz respeito ao usuário ter as credencias para logar nquela aplicação. Quando a autenticação é inválida, é retornado o código 401 'Unathorized'
+
+A autorização diz respeito se o usuário em questão tem autorização para acessar determinado recurso. Quando o usuário não possui permissão, é retornado o código 403 'Forbiden'.
+
+
+### APIs autenticadas
+
+APIs podem ser autenticadas ou abertas, uma API aberta é aquela que não exige um código para fazer requisições, ela é pública para ser acessada, por exemplo a ViaCEP e Json Place Holder, que foram APIs utilizadas durante o curso.
+
+Seguindo na utilizaçã de APIs no curso, começaremos a utilizar a API da Marvel, que é uma API autenticada.
 
 
 
