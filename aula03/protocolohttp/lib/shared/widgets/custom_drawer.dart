@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:protocolohttp/pages/login_page.dart';
 import 'package:protocolohttp/pages/post_page.dart';
+import 'package:protocolohttp/repositories/back4app/tasks_back4app_repository.dart';
 import '../../pages/configuracoes/configuracoes_hive_page.dart';
 import '../../pages/dados_cadastrais/dados_cadastrais_hive.dart';
 import '../../pages/numeros_aleatorios/numeros_aleatorios_hive_page.dart';
@@ -11,9 +12,9 @@ class CustonDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
+          // Câmera
           InkWell(
             onTap: () {
               showModalBottomSheet(
@@ -51,6 +52,7 @@ class CustonDrawer extends StatelessWidget {
                 accountName: const Text("Danilo Perez"),
                 accountEmail: const Text("email@email.com")),
           ),
+          // Dados cadastrais
           InkWell(
             child: Container(
                 padding:
@@ -77,6 +79,7 @@ class CustonDrawer extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          // Termos de privacidade
           InkWell(
             child: Container(
                 padding:
@@ -125,6 +128,7 @@ class CustonDrawer extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          // Gerador de Números
           InkWell(
             child: Container(
                 padding:
@@ -151,6 +155,7 @@ class CustonDrawer extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          // Novo Post
           InkWell(
             child: Container(
                 padding:
@@ -175,6 +180,34 @@ class CustonDrawer extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          // Tarefas Back 4 App
+          InkWell(
+            child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                width: double.infinity,
+                child: const Row(
+                  children: [
+                    Icon(Icons.http),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text("Tarefas HTTP"),
+                  ],
+                )),
+            onTap: () async {
+              var taskRepository = TasksBack4AppRepository();
+              var tasks = await taskRepository.getTask();
+              print(tasks);
+              //Navigator.push(context,
+              //    MaterialPageRoute(builder: (bc) => const PostPage()));
+            },
+          ),
+          const Divider(),
+          const SizedBox(
+            height: 10,
+          ),
+          // Configurações
           InkWell(
             child: Container(
                 padding:
@@ -197,6 +230,7 @@ class CustonDrawer extends StatelessWidget {
                       builder: (bc) => const ConfiguracoesHivePage()));
             },
           ),
+          // Sair
           InkWell(
             child: Container(
                 padding:

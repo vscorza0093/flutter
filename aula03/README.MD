@@ -139,6 +139,17 @@ APIs podem ser autenticadas ou abertas, uma API aberta é aquela que não exige 
 Seguindo na utilizaçã de APIs no curso, começaremos a utilizar a API da Marvel, que é uma API autenticada.
 
 
+## CRUD com aplicação dos verbos HTTP
+
+### Back4App
+
+Como ferramenta de apoio, utilizaremos o Back4App, o qual nos provém uma gama de recursos para criação do back-end, como banco de dados, acesso via API, SDKs, controle de usuários e outras ferramentas.
+
+Criaremos uma classe de lista de tarefas e faremos todo o seu gerenciamento utilizando requisições HTTP.
+
+Faremos uso de classes customizadas de acesso a dados, dotenv e Interceptors para envio de cabeçalhos de autenticação.
+
+
 
 
 Bibliografia
