@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:protocolohttp/pages/login_page.dart';
 import 'package:protocolohttp/pages/post_page.dart';
-import 'package:protocolohttp/repositories/back4app/tasks_back4app_repository.dart';
+import 'package:protocolohttp/pages/tarefa_page/task_back4app_page.dart';
+import 'package:protocolohttp/repositories/back4app/tasks_http_repository.dart';
 import '../../pages/configuracoes/configuracoes_hive_page.dart';
 import '../../pages/dados_cadastrais/dados_cadastrais_hive.dart';
 import '../../pages/numeros_aleatorios/numeros_aleatorios_hive_page.dart';
@@ -14,7 +15,7 @@ class CustonDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          // Câmera
+          // Loading Widget
           InkWell(
             onTap: () {
               showModalBottomSheet(
@@ -197,10 +198,12 @@ class CustonDrawer extends StatelessWidget {
                 )),
             onTap: () async {
               var taskRepository = TasksBack4AppRepository();
-              var tasks = await taskRepository.getTask();
-              print(tasks);
-              //Navigator.push(context,
-              //    MaterialPageRoute(builder: (bc) => const PostPage()));
+              var tasks = await taskRepository.getTask(false);
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+              // ignore: use_build_context_synchronously
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (bc) => const TaskHTTPPage()));
             },
           ),
           const Divider(),

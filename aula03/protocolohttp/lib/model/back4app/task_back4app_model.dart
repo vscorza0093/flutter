@@ -28,7 +28,7 @@ class Task {
 
   Task(this.objectId, this.description, this.concluded, this.createdAt,
       this.updatedAt);
-
+  Task.post(this.description, this.concluded);
   Task.fromJson(Map<String, dynamic> json) {
     objectId = json['objectId'];
     description = json['description'];
@@ -44,6 +44,20 @@ class Task {
     data['concluded'] = concluded;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    return data;
+  }
+
+  Map<String, dynamic> toCreateJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    data['concluded'] = concluded;
+    return data;
+  }
+
+  Map<String, dynamic> toUpdateJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['description'] = description;
+    data['concluded'] = concluded;
     return data;
   }
 }
