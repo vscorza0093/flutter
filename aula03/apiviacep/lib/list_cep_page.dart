@@ -20,10 +20,10 @@ class _ListCEPPageState extends State<ListCEPPage> {
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Filtros:',
+                'Filtro por CEP:',
                 style: GoogleFonts.roboto(
                     fontSize: 24, fontWeight: FontWeight.w700),
               ),
