@@ -151,7 +151,91 @@ Faremos uso de classes customizadas de acesso a dados, dotenv e Interceptors par
 
 
 
+## Introdução aos componentes visuais no Flutter
+
+### Componentes visuais
+
+Neste começo de módulo utilizaremos o pacote Launcher Icons para gerar o ícone da nossa aplicação. 
+
+O `Launcher Icons` exige instalação e configuração. 
+
+A instalação é feita diretamente no `pubspec.yaml`, no setor de `dev_dependencies`.
+
+A configuração pode ser feita criando um novo arquivo `yaml` para o launcher icons ou diretamente no `pubspec.yaml`. Não existe uma grande diferença entre ambas as configurações, mas, no caso, faremos diretamente pelo arquivo pubspec.
+
+```yaml
+dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+```
+
+A geração de ícones pode ser feita para dispositivos móveis, web, windows e macos e possui diversos atributos[2] que podem ser incluídos para gerar uma configuração mais específica.
+
+Após inserir todos os atributos necessários na documentação, basta executar o código a baixo para que os ícones sejam gerados e o ícone do aplicativo seja automaticamente trocado.
+
+```bash
+flutter pub run flutter_launcher_icons
+```
+
+Podemos executar esse comando toda vez que fizermos uma alteração no nosso ícone, substituindo as configurações antigas pelas novas.
+
+
+### Trabalhando com Font Awesome
+
+Font Awesome[3] é um site de fornecimento ícones, muito utilizado no desenvolvimento web. 
+
+Podemos utilizar o Fonte Awesome bixando ícones direto do site ou então podemos acessá-los diretamente através de um pacote Flutter[4]
+
+Esse pacote deve ser adicionado no setor `dependencies`, no arquivo `pubspec.yaml`
+
+```yaml
+dependencies:
+  font_awesome_flutter: ^10.6.0
+```
+
+Em seguida, o pacote já está pronto para ser usado. Ao invés de utilizar o widget `Icon`, devemos começar a utilizar o widget `FaIcon`.
+
+
+### Indicador de porcentagens
+
+Em alguns casos é preferível ter uma barra de progresso para indicar o estado atual do carregamento da aplicação, ao invés de utilizar o widget Circular Progress Indicator puro.
+
+No Flutter existe um pacote chamado `percent indicador`, que facilita bastante a nossa vida no momento em que precisamos indicar ao usuário o progresso do carregamento de uma tela.
+
+Utilizando o `percent indicator` combinado ao `CircularProgressIndicator` podemos alcançar diversas funcionalidades, barra de progresso com uma ou mais cores, indicação de porcentagem, tamanhos diversos, comportamentos distintos, animações, podemos também utilizar `LinearPercentIndicator` ao invés do `CircularProgressIndicator`.
+
+Sua instalação é feita simplesmente adicionando o pacote ao setor `dependencies` do arquivo `pubspec.yaml`.
+
+```yaml
+dependencies:
+  percent_indicator: ^4.2.3
+```
+
+A própria documentação do pacote nos fornece uma diversidade de opções para começar a estudar e testar o funcionamento do `percent indicator`, com poucas modificações podemos fazer os exemplos funcionarem de maneira completamente customizada.
+
+É uma biblioteca bastante intuitiva e poderosa.
+
+
+### Auto Size Text
+
+
+
+
+
+
+
+
+
+
 
 Bibliografia
 
 [1] json to dart - https://javiercbk.github.io/json_to_dart/
+[2] flutter launcher icons - https://pub.dev/packages/flutter_launcher_icons
+[3] font awesome - https://fontawesome.com/
+[4] font awesome flutter - https://pub.dev/packages/font_awesome_flutter
