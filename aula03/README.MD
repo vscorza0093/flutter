@@ -420,7 +420,7 @@ Existem situações que precisaremos verificar se o usuário está conectado à 
 
 Para isso existe o pacote `Connectivity Plus` que nos fornecerá esse tipo de facilidade.
 
-Esse pluguin permite aos aplicativos Flutter descobrirem a conectividade de rede e a se auto configurar de acordo com o necessário, distinguindo entre rede de celular e conexão WiFi.
+Esse plugin permite aos aplicativos Flutter descobrirem a conectividade de rede e a se auto configurar de acordo com o necessário, distinguindo entre rede de celular e conexão WiFi.
 
 
 ### Obtendo informações do GPS
@@ -439,16 +439,93 @@ Também faremos leitura de QrCode, câmera e galeria do dispositivo, além de fa
 
 ### Leitor de QrCode
 
-Para realizar a leitura de QrCodes temos disponível o pacote `Qr Code Scanner`.
+Para realizar a leitura de QrCodes temos disponível o pacote `Qr Code Scanner`, porém este pacote não está mais sendo continuado, mesmo que algumas correções ainda estejam sendo feitas.
+
+A mesma pessoa está desenvolvendo o `Mobile Scanner`, que é baseado em MLKit, um pacote de Machine Learning da Google, que usa `CameraX` em dispositivos Android e AVFoundation em dispositivos iOS.
+
+Nesse curso utilizaremos o pacote `Qr Code Scanner` que é um pacote que funciona em Android e iOS, embedando nativamente a `platform view` dentro do Flutter.
+
+A integração com Flutter é desatada, muito melhor do que pular em uma `Activity` nativa or uma `ViewController` para performar o scan.
+
+Na criação do componente `QRView` precisamos de uma chave do tipo `GlobalKey`, passando uma `debugLabel` no construtor do objeto, e de um event listener onQRViewCreated, que vai receber um evento como parâmetro.
+
+Esse evento receberá do contexto da aplicação (não é um argumento que precisa ser passado no event listener) um `QRViewController` como parâmetro e esse controle será usado para controlar o momento em que um QRCode for escutado pela aplicação, através de um `Stream`: `scannerDataAstream` que aciona o método `listen` e faz esse controle através de um setstate em seu corpo.
+
+```dart
+void _onQRViewCreated(QRViewController controller) {
+  this.controller = controller;
+  controller.scannerDataStream.listen((scanData) {
+    setState(() {
+      result = scanData;
+    });
+  })
+}
+```
+
+Além disso, existem algumas configurações de integração para Android que, no caso da versão do Flutter ser um pouco mais antiga, alguns pontos precisarão ser atualizados.
+
+No iOS é necessário adicionar algumas configurações no arquivo `info.plist` 
+
+Esse pacote possui eventos para manipulação da câmera, como flash, 'flipar' a câmera, pausar e resumir a ação do `stream` da câmera e do scanner.
 
 
+### Câmera e galeria
 
+Existem casos em que queremos que seja possível utilizar a câmera do dispositivo dentro da nossa aplicação.
 
-### Usando câmera e galeria
+Para isso existe o pacote `Image Picker` que é um plugin para iOS e Android para captura de fotos com a câmera e também para pegar imagens de dentro da galeria do dispositivo
+
+Existem algumas informações para instalação do pacote para funcionamento com iOS, então devemos seguir a documentação para compreender cada etapa. Para Android não é mais necessário aplicar nenhuma configuração.
+
+Sua utilização é bem simples, bastando que seja criada um objeto do tipo `XFile` que receberá resultados de métodos assíncronos do objeto `ImagePicker`, passando um `ImageSource` como parâmetro de cada método
+
+```dart
+final ImagePicker _picker = ImagePicker();
+
+// Pega uma imagem da galeria
+final XFile? photoGallery = await _picker.pickImage(source: ImageSource.gallery);
+// Captura uma foto
+final XFile? newPhoto = await _picker.pickImage(source: ImageSource.camera);
+
+// Pega um video da galeria
+final XFile? videoGallery = await _picker.pickVideo(source: ImageSource.gallery);
+// Captura um video
+final XFile? newVideo = await _picker.pickVideo(source: ImageSource.camera);
+
+// Pega multiplas imagens
+final LIst<XFile>? images = await _picker.pickMultiImage();
+```
+
+Existe uma recomendação para lidar com a destruição do MainActivity no Android caso o dispositivo esteja com alta pressão de memória, o sistema pode destruir a MainActivity da aplicação, usando o `image_picker`. 
+
+Então é importante ler a documentação para que haja prevenção de situações extremas.
+
+Para salvar imagens em nossa galeria utilizamos o pacote `Gallery Saver`, que salva imagens e videos da internet ou arquivos temporários para armazenamentos externos. Ambos imagens e videos podem ser visualizados na galeria do Android e nas fotos do iOS.
+
+Além da instalação, algumas configurações precisam ser feitas para Android e iOS.
+
 
 
 
 ### Crop Image
+
+`Image Cropper` é um plugin do Flutter que funciona para Android, iOS e Web e nos traz facilidades para recortar imagens. Esse plugin é baseado em três bibliotecas nativas, então ele com com interfaces diferentes entre essas plataformas.
+
+Esse pacote não manipula imagens em códigos Dart diretamente, ao invés disso, esse plugin usa o `Platform Channel` para expor APIs Dart que a aplicação pode usar para se comunicar com três poderosas bibliotecas nativas (`uCrop`, `TOCropViewController` e `croppie`), para recortar e rotacionar imagens. 
+
+Para Android algumas configurações devem ser adicionadas ao arquivo `AndroidManifest.xml`
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
