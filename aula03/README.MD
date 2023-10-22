@@ -223,6 +223,242 @@ A própria documentação do pacote nos fornece uma diversidade de opções para
 
 ### Auto Size Text
 
+`Auto Size Text` é um pacote do Flutter que funciona exatamente como o componente `Text`, com a diferença de que ele se ajusta conforme for configurado.
+
+Podemos configurar tamanho inicial, tamanho mínimo da fonte, o overflow de acordo com o número máximo de linhas desejado, diminuindo a letra de acordo com a quantidade de caracteres até um máximo de linhas desejado.
+
+Existem muitas outros parâmetros para trabalhar com `Auto Sized Text` e sua documentação é bastante completa, com apresentações, presets e muitas explicações do componente.
+
+Sua instalação pode ser feita pelo `pubspec.yaml` no setor `dependencies`.
+
+```yaml
+  auto_size_text: ^3.0.0
+```
+
+Em geral, sua utilização é bastante simples e e é um pacote extremamente útil, que nos traz bastante versatilidade.
+
+
+### Splash Screen
+
+O SplashScreen é uma API que foi iniciada no Android 12, que permite o aplicativo inicializar com uma animação, incluindo também uma movimentação de inicialização, uma splash screen mostrando o ícone do seu aplicativo e adicionando uma transição para o aplicativo em si[5].
+
+O Android tem uma documentação[5] explicando o funcionamento da splash screen, porém essa é uma funcionalidade para Kotlin ou Java, e pelo Flutter, caso seja necessária uma animação de introdução para o aplicativo, deve-se criar um widget stateful e inserir componentes e animações para alcançar o resultado desejado, não havendo uma classe especial para representar o Splash Screen.
+
+O Flutter possui duas bibliotecas principais de animação, sendo uma delas para textos. São elas `animations` e `animated text kit`.
+
+Como nessa aula utilizaremos `Animated Text Kit`, falaremos dela. É uma biblioteca que já nos traz diversos presets de tipos de animações, com customização muito aberta e diversa.
+
+
+### Recriando Bottom Navigation Bar
+
+`Bottom Navigation Bar` é um componente que utilizamos anteriormente, utilizamos esse componente dentro do parâmetro `bottomNavigationBar` do `Scaffold`, e é um componente que nos facilita a criação de uma barra de menu no canto inferior da tela para interação com a troca de páginas da `Page View`.
+
+Lembrando que é sempre necessário que o componente `child` do `Scaffold` seja sempre uma `Page View`, se não o funcionamento não irá ocorrer como desejado.
+
+Nesta aula estamos recriando esse menu, utilizando uma biblioteca chamada `Convex Bottom Bar`, que é uma biblioteca de customização que traz funcionalidades de design que agregam muito à interface do usuário.
+
+Sua instalação pode ser feita pelo `pubspec.yaml` no setor `dependencies`.
+
+```yaml
+convex_bottom_bar: ^3.2.0
+```
+
+
+## Internacionalização e Máscaras com Flutter
+
+Neste módulo será abordado forma de trabalhar com aplicações nas quais precisaremos formatar datas e valores em formatos específicos de um determinado país ou situação.
+
+Passaremos pelo uso de máscaras na digitação de campos, usando um pacote brasileiro que nos trará diversos benefícios.
+
+Finalizaremos com um pacote que nos ajudará a fazer um aplicativo que funcione para diversos países diferentes, onde poderemos criar arquivos de tradução e usar em nosso app.
+
+
+### Customização com Padrões Brasileiros
+
+É comum que haja a necessidade de traduzir nosso aplicativo do português ou até mesmo do inglês para diversos outros idiomas e é comum que presicemos utilizar formatações brasileiras em nossos aplicativos.
+
+Existe um pacote chamado `Brazil Fields` que traz diveros parâmetros de formatação, para altura, cartão bancário, CEP, CNPJ, Hora, Quilometragem, Moeda (R$), temperatura e muitos outros formatos para padrões brasileiros, além de estados, meses regiões e dias da semana.
+
+Possui diversos métodos para utilização.
+
+Sua instalação é feita pelo arquivo `pubspec.yaml` no setor `dependencies`
+
+Podemos aplicar esses métodos em components de input ou de output.
+
+
+### Configuração de Moeda e Hora
+
+Existe um pacote muito utilizado no mercado de Flutter que é o `intl`.
+
+É um pacote que provém facilidades de internacionalização, incluindo tradução de mensagens, plurais e gêneros, formatação e parsing de datas e números, e textos bidirecionais.
+
+Possui uma classe principal `Intl`, que define por padrão os métodos para acessar a maioria dos mecanismos de internacionalização. Essa biblioteca também define as classes `DateFormat`, `NumberFormat`, e `BidFormatter`.
+
+Sua documentação é bastante extensa e vale o estudo para tornar a sua aplicação cada vez mais acessível e globalizada.
+
+Sua instalação é feita no arquivo `pubspec.yaml` no setor `dependencies`
+
+```yaml
+intl: ^0.18.1
+```
+
+
+### Internacionalização do Aplicativo
+
+Apesar do pacote `intl` nos fornecer as facilidades de internacionalização, ele não nos provém facilidades de localização.
+
+Para isso existe o pacote `Easy Localization`.
+
+É um pacote relativamente simples, que trabalhará com caminhos de arquivos de formato `json` para identificar as localizações e traduções disponíveis para a nossa aplicação.
+
+Sua instalação é feita pelo arquivo `pubspec.yaml` pelo setor `dependencies` e o caminho para a pasta que será container das traduções disponíveis, deverá ficar dentro do setor `assets`
+
+```yaml
+dependencies:
+  easy_localization: ^3.0.3
+
+assets:
+  - assets/translations/
+```
+
+Para fazer o pacote funcionar com a aplicação, devemos chamar `EasyLocalization.ensureInitialized()` no arquivo `main`, antes de `runApp()`.
+
+O exemplo a baixo mostra como essa inicialização deve ser feita.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en', 'US'), Locale('de', 'DE')],
+      path: 'assets/translations', // <-- change the path of the translation files 
+      fallbackLocale: Locale('en', 'US'),
+      child: MyApp()
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      home: MyHomePage()
+    );
+  }
+}
+
+```
+
+É um pacote relativamente simples de se compreender e manipular, mas que nos permite internacionalizar nossa aplicação, permitindo que o usuário selecione o idioma desejado, por exemplo.
+
+
+
+## Iteração do usuário com dispositivo
+
+Neste módulo abordaremos principalmente pacotes que fazem chamadas diretas ao sistema operacional, baseados nas chamadas Chanel.
+
+Trataremos desde chamadas à bateria do dispositivo, GPS, compartilhamento de dados, informações do sistema operacional, rede e muitos outros.
+
+### Obtendo status da bateria
+
+O pacote `Battery Plus` nos permite manipular o status atual da bateria e retorna diversas informações para o usuário.
+
+Podemos aplicar seu estado atual à barras de progresso, textos e o que mais acharmos necessário.
+
+### Abrindo URLs Externas
+
+Digamos que nosso aplicativo traga listas de publicações e o usuário tenha a opção de clicar no componente para abrir uma URL externa.
+
+Também está disponível uma biblioteca para esse tipo de situação, que é a `Url Launcher`.
+
+É uma biblioteca que possui uma grande diversidade de configurações, nos permitindo chamar emails, ligações para números de telefone e até mesmo envio de mensagem sms e abrir arquivos.
+
+### Compartilhamento
+
+Um outro pacote muito útil é o `Share Plus` que nos traz facilitações para que o usuário possa compartilhar links ou outros tipos de informações com outros usuários.
+
+Basicamente este pacote faz um `wrap` do `ACTION_SEND` intent do Android e `UIActivityViewController` do iOS, mas também é compatível com web e windows, mac e linux.
+
+Também é um pacote que deve ser instalado no arquivo `pubspec.yaml` no setor `dependencies` e depois ser invocado dentro do código da aplicação.
+
+
+### Obtendo caminho das pastas do dispositivo
+
+Existirão diversas situações em que será necessário salvar ou manipular algum arquivo no dispositivo.
+
+Para isso existe o pacote `Path Provider`, que é um pacote que já foi utilizado anteriormente nesse curso e nos facilita a obtenção dos caminhos no nosso sistema.
+
+Apesar de ser multiplataforma, algumas funcionalidades são excluisivas de algumas plataformas e é importante conferir a documentação.
+
+
+### Obtendo informações sobre o aplicativo
+
+Existem situações em que queremos obter informações do nosso aplicativo, como por exemplo a necessidade de verificar a versão do aplicativo para que seja feito um auto update, através de um acesso automático do aplicativo à uma URL que retornará para o aplicativo se existe uma versão mais recente disponível, para então o aplicativo perguntar para o usuário se ele deseja realizar a atualização.
+
+Para isso existe uma biblioteca chamda `Package Info Plus` que é uma biblioteca feita pela comunidade do Flutter busca para nós diversas informações sobre a nossa aplicação e nos fornece em formato de String.
+
+
+### Obtendo informações do dispositivo
+
+Da mesma forma que existem situações em que precisamos pegar informações do aplicativo, existem situações em que precisamos de informações do sistema operacional, para saber se o nosso aplicativo pode rodar naquele sistema, ou para saber que tipo de adaptação nosso aplicativo precisa fazer para cada sistema, em que modelo de celular.
+
+Para isso existe o pacote `Device Info`, que pega informações do dispositivo atual que está utilizando o aplicativo.
+
+
+### Obtendo informações da conexão do dispositivo
+
+Existem situações que precisaremos verificar se o usuário está conectado à internet ou até mesmo em que tipo de conexão ou rede este usuário está conectado.
+
+Para isso existe o pacote `Connectivity Plus` que nos fornecerá esse tipo de facilidade.
+
+Esse pluguin permite aos aplicativos Flutter descobrirem a conectividade de rede e a se auto configurar de acordo com o necessário, distinguindo entre rede de celular e conexão WiFi.
+
+
+### Obtendo informações do GPS
+
+Para obtermos informações do GPS do usuário e poder trabalhar com bússula, consequentemente mapa e outras funcionalidades de geolocalização utilizamos o pacote `geolocator`
+
+Esse pacote nos fornece serviços de localização como última localização conhecida, localização atual do dispositivo, localização contínua com atualização, checar se os serviços estão ativados no dispositivo e muitas outras funcionalidades.
+
+
+## Manipulando Câmera e Imagens em Flutter
+
+Neste módulo trataremos de chamadas ao sistema operacional, mas focado no recurso da câmera do dispositivo.
+
+Também faremos leitura de QrCode, câmera e galeria do dispositivo, além de fazer Crop das imagens que foram tiradas da câmera.
+
+
+### Leitor de QrCode
+
+Para realizar a leitura de QrCodes temos disponível o pacote `Qr Code Scanner`.
+
+
+
+
+### Usando câmera e galeria
+
+
+
+### Crop Image
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -235,7 +471,8 @@ A própria documentação do pacote nos fornece uma diversidade de opções para
 
 Bibliografia
 
-[1] json to dart - https://javiercbk.github.io/json_to_dart/
-[2] flutter launcher icons - https://pub.dev/packages/flutter_launcher_icons
-[3] font awesome - https://fontawesome.com/
-[4] font awesome flutter - https://pub.dev/packages/font_awesome_flutter
+[1] Json to Dart - https://javiercbk.github.io/json_to_dart/
+[2] Flutter Launcher Icons - https://pub.dev/packages/flutter_launcher_icons
+[3] Font Awesome - https://fontawesome.com/
+[4] Font Awesome Flutter - https://pub.dev/packages/font_awesome_flutter
+[5] Android - Splash Screen - https://developer.android.com/develop/ui/views/launch/splash-screen
