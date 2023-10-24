@@ -1,5 +1,6 @@
 import 'package:contactlist/card_page.dart';
 import 'package:flutter/material.dart';
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -82,11 +83,20 @@ class _HomePageState extends State<HomePage> {
               ));
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'abc'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.access_alarm_sharp), label: 'def')
-      ]),
+      bottomNavigationBar: ConvexButton.fab(
+        icon: Icons.add,
+        onTap: () {
+          debugPrint('Add new Contact');
+          setState(() {});
+        },
+      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const [
+      //     BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'abc'),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.access_alarm_sharp), label: 'def')
+      //   ],
+      // ),
     );
   }
 }
