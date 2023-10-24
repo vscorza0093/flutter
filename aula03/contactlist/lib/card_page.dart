@@ -17,6 +17,7 @@ class _CardPageState extends State<CardPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.personName),
+        backgroundColor: Colors.orange,
       ),
       body: ListView(
         children: [
@@ -32,7 +33,7 @@ class _CardPageState extends State<CardPage> {
                       height: 150,
                       width: 150,
                       child: Container(
-                        color: Colors.amber,
+                        color: Colors.grey,
                       ),
                     ),
                     const SizedBox(

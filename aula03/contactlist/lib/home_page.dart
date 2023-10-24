@@ -1,4 +1,5 @@
 import 'package:contactlist/card_page.dart';
+import 'package:contactlist/new_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lista de Contatos'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.orange,
       ),
       body: ListView.builder(
         itemCount: nameList.length,
@@ -83,20 +84,21 @@ class _HomePageState extends State<HomePage> {
               ));
         },
       ),
-      bottomNavigationBar: ConvexButton.fab(
-        icon: Icons.add,
-        onTap: () {
-          debugPrint('Add new Contact');
-          setState(() {});
+      bottomNavigationBar: ConvexAppBar(
+        height: 30,
+        items: const [
+          TabItem(
+            icon: Icon(Icons.add),
+            title: 'Add contact',
+          ),
+        ],
+        onTap: (int i) {
+          debugPrint('Add contact');
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext bc) => const NewContactPage()));
         },
+        backgroundColor: Colors.orange,
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const [
-      //     BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'abc'),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.access_alarm_sharp), label: 'def')
-      //   ],
-      // ),
     );
   }
 }
