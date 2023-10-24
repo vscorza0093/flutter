@@ -10,11 +10,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> nameList = <String>[
-    'Vinicius Scorza',
-    'Paula Hemsi',
-    'Maria Cristina Scorza',
-    'Maria Lucia de Paula',
-    'Milton Scorza',
+    'Vinicius',
+    'Paula',
+    'Maria Cristina',
+    'Maria Lucia',
+    'Milton',
   ];
 
   List<String> phoneNumber = <String>[
@@ -82,6 +82,11 @@ class _HomePageState extends State<HomePage> {
               ));
         },
       ),
+      bottomNavigationBar: BottomNavigationBar(items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'abc'),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.access_alarm_sharp), label: 'def')
+      ]),
     );
   }
 }
