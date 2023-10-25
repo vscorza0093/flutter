@@ -1,4 +1,6 @@
 import 'package:contactlist/card_page.dart';
+import 'package:contactlist/contact_model.dart';
+import 'package:contactlist/contact_repository.dart';
 import 'package:contactlist/new_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -11,21 +13,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> nameList = <String>[
-    'Vinicius',
-    'Paula',
-    'Maria Cristina',
-    'Maria Lucia',
-    'Milton',
-  ];
+  var contactList = ContactModel([]);
+  var contactRepository = ContactRepository();
 
-  List<String> phoneNumber = <String>[
-    '666-666-666',
-    '012-345-6s2',
-    '123-456-789',
-    '123-456-789',
-    '123-456-789',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getContacts();
+  }
+
+  void getContacts() async {
+    contactList = await contactRepository.getContacts();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,28 +35,28 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.orange,
       ),
       body: ListView.builder(
-        itemCount: nameList.length,
+        itemCount: contactList.contacts.length,
         itemBuilder: (BuildContext bc, int index) {
           return Dismissible(
               onDismissed: (DismissDirection dir) {
-                setState(() {
-                  nameList.remove(nameList[index]);
-                  phoneNumber.remove(phoneNumber[index]);
-                });
-                debugPrint('remove item $index');
+                contactRepository
+                    .deleteContact(contactList.contacts[index].objectId);
+                getContacts();
               },
               key: UniqueKey(),
               child: Container(
                 margin: const EdgeInsets.all(4),
                 child: InkWell(
                   onTap: () {
+                    setState(() {
+                      getContacts();
+                    });
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CardPage(
-                        personName: nameList[index],
-                        phoneNumber: phoneNumber[index],
+                        personName: contactList.contacts[index].name,
+                        phoneNumber: contactList.contacts[index].phone,
                       ),
                     ));
-                    debugPrint('clicked');
                   },
                   child: Card(
                     color: const Color.fromARGB(255, 243, 243, 243),
@@ -66,14 +66,14 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Nome: ${nameList[index]}",
+                            "Nome: ${contactList.contacts[index].name}",
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
                             height: 16,
                           ),
                           Text(
-                            "Nota: ${phoneNumber[index]}",
+                            "Nota: ${contactList.contacts[index].phone}",
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         onTap: (int i) {
-          debugPrint('Add contact');
+          getContacts();
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext bc) => const NewContactPage()));
         },
