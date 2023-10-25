@@ -20,11 +20,11 @@ class _HomePageState extends State<HomePage> {
   ];
 
   List<String> phoneNumber = <String>[
-    '666-666-66',
-    '0123456s2',
-    '123456789',
-    '123456789',
-    '123456789',
+    '666-666-666',
+    '012-345-6s2',
+    '123-456-789',
+    '123-456-789',
+    '123-456-789',
   ];
 
   @override
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
                     debugPrint('clicked');
                   },
                   child: Card(
-                    color: const Color.fromARGB(255, 230, 230, 230),
+                    color: const Color.fromARGB(255, 243, 243, 243),
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       child: Column(
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(
-                            height: 22,
+                            height: 16,
                           ),
                           Text(
                             "Nota: ${phoneNumber[index]}",

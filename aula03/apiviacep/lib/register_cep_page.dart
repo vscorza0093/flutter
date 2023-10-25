@@ -13,14 +13,19 @@ class _RegisterCEPPageState extends State<RegisterCEPPage> {
   RegisterCEPRepository registerCEPRepository = RegisterCEPRepository();
   TextEditingController textController = TextEditingController();
 
-  void successMessage(BuildContext context) {
+  void successMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('CEP cadastrado com sucesso')));
   }
 
-  void errorMessage(BuildContext context) {
+  void errorMessage() {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('CEP inválido')));
+  }
+
+  void cepAlreadyRegistered() {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('CEP já cadastrado')));
   }
 
   @override
@@ -78,14 +83,19 @@ class _RegisterCEPPageState extends State<RegisterCEPPage> {
                   child: Container(
                     color: Colors.blue,
                     child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (textController.text.length == 8) {
-                            (registerCEPRepository
-                                        .postCEP(textController.text)
-                                        .toString() ==
-                                    '1')
-                                ? errorMessage(context)
-                                : successMessage(context);
+                            if (await registerCEPRepository
+                                    .checkCEP(textController.text) ==
+                                0) {
+                              (await registerCEPRepository
+                                          .postCEP(textController.text) ==
+                                      1)
+                                  ? errorMessage()
+                                  : successMessage();
+                            } else {
+                              cepAlreadyRegistered();
+                            }
                           }
                         },
                         child: Text(

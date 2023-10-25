@@ -48,37 +48,42 @@ class _ListCEPPageState extends State<ListCEPPage> {
                   itemBuilder: (BuildContext bc, int index) {
                     var cep = cepList.ceps[index];
                     return Dismissible(
-                        key: Key(cep.cep),
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          child: Card(
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cep.cep,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                      key: Key(cep.cep),
+                      child: Container(
+                        margin: const EdgeInsets.all(8),
+                        child: Card(
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  cep.cep,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
                                   ),
-                                  const SizedBox(
-                                    height: 15,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  cep.bairro,
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
                                   ),
-                                  Text(
-                                    cep.bairro,
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
                           ),
-                        ));
+                        ),
+                      ),
+                      onDismissed: (DismissDirection dismissDirection) {
+                        var objectId = cep.getId;
+                        registerCEPRepository.deleteCEP(objectId);
+                      },
+                    );
                   },
                 )),
         ],

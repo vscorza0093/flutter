@@ -22,6 +22,7 @@ class RegisterCEPModel {
 }
 
 class CEP {
+  String id = '';
   String cep = '';
   String logradouro = '';
   String bairro = '';
@@ -31,11 +32,12 @@ class CEP {
   CEP();
 
   CEP.fromJson(Map<String, dynamic> json) {
-    cep = json['cep'];
-    logradouro = json['logradouro'];
-    bairro = json['bairro'];
-    localidade = json['localidade'];
-    uf = json['uf'];
+    id = json['objectId'] ?? '';
+    cep = json['cep'] ?? '';
+    logradouro = json['logradouro'] ?? '';
+    bairro = json['bairro'] ?? '';
+    localidade = json['localidade'] ?? '';
+    uf = json['uf'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -47,4 +49,8 @@ class CEP {
     data['uf'] = uf;
     return data;
   }
+
+  get getId => id;
+
+  get getCEP => cep;
 }
