@@ -85,17 +85,19 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       bottomNavigationBar: ConvexAppBar(
-        height: 30,
         items: const [
-          TabItem(
-            icon: Icon(Icons.add),
-            title: 'Add contact',
-          ),
+          TabItem(icon: Icons.home, title: 'Novo contato'),
+          TabItem(icon: Icons.map, title: 'Atualizar contatos'),
         ],
         onTap: (int i) {
-          getContacts();
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext bc) => const NewContactPage()));
+          debugPrint(i.toString());
+          if (i == 0) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext bc) => const NewContactPage()));
+          } else {
+            getContacts();
+            setState(() {});
+          }
         },
         backgroundColor: Colors.orange,
       ),
