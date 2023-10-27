@@ -86,11 +86,10 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: ConvexAppBar(
         items: const [
-          TabItem(icon: Icons.home, title: 'Novo contato'),
-          TabItem(icon: Icons.map, title: 'Atualizar contatos'),
+          TabItem(icon: Icons.add, title: 'Novo contato'),
+          TabItem(icon: Icons.update, title: 'Atualizar contatos'),
         ],
         onTap: (int i) {
-          debugPrint(i.toString());
           if (i == 0) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (BuildContext bc) => const NewContactPage()));
