@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping/pages/product.page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -63,7 +64,7 @@ class HomePage extends StatelessWidget {
             ),
             SizedBox(
               height: 300,
-              child: productList(),
+              child: productList(context),
             )
           ],
         ),
@@ -154,24 +155,24 @@ Widget categoryItem() {
       child: Image.asset("assets/Icon_Devices.png"));
 }
 
-Widget productList() {
+Widget productList(BuildContext context) {
   return SizedBox(
     width: 70,
     child: ListView(
       scrollDirection: Axis.horizontal,
       children: [
-        productItem(),
-        productItem(),
-        productItem(),
-        productItem(),
-        productItem(),
-        productItem(),
+        productItem(context),
+        productItem(context),
+        productItem(context),
+        productItem(context),
+        productItem(context),
+        productItem(context),
       ],
     ),
   );
 }
 
-Widget productItem() {
+Widget productItem(BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(10),
     margin: const EdgeInsets.all(5),
@@ -180,11 +181,21 @@ Widget productItem() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.asset(
-          "assets/product-1.png",
-          width: 150,
-          height: 150,
-          fit: BoxFit.cover,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ProductPage(),
+              ),
+            );
+          },
+          child: Image.asset(
+            "assets/product-1.png",
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
         ),
         const SizedBox(
           height: 10,
