@@ -35,10 +35,8 @@ class _ProductListState extends State<ProductList> {
         scrollDirection: widget.scrollDirection,
         itemCount: productList.products.length,
         itemBuilder: (BuildContext bc, int index) {
-          debugPrint(productList.products.length.toString());
           return ProductItem(
             image: productList.products[index].productImage!.url.toString(),
-            //image: productList.products[index].productImage.toString(),
             title: productList.products[index].productTitle,
             brand: productList.products[index].productBrand,
             description: productList.products[index].productDescription,

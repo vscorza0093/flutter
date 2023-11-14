@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-//import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shopping/widgets/product/product.model.dart';
 
@@ -15,8 +13,6 @@ class ProductRepository {
     dio.options.headers['Content-Type'] = dotenv.get('CONTENT_TYPE');
 
     final response = await dio.get("$baseUrl/ECommerce_Products");
-
-    debugPrint(response.statusCode.toString());
 
     return ProductModel.fromJson(response.data);
   }
