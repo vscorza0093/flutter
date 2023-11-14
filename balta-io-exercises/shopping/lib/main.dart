@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopping/pages/login.page.dart';
+import 'package:shopping/pages/tabs.page.dart';
+import 'package:shopping/themes/light.theme.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 
@@ -13,8 +16,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Shopping",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: const LoginPage(),
+      theme: lightTheme(),
+      home: const DefaultTabController(
+        length: 3,
+        child: TabsPage(),
+      ),
     );
   }
 }

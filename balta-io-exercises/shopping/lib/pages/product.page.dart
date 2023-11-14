@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatelessWidget {
-  const ProductPage({super.key});
+  final String image;
+  final String title;
+  final String brand;
+  final String description;
+  final double price;
+
+  const ProductPage(
+      {super.key,
+      required this.image,
+      required this.title,
+      required this.brand,
+      required this.description,
+      required this.price});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: NestedScrollView(
-        body: Container(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
@@ -18,11 +29,50 @@ class ProductPage extends StatelessWidget {
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                background: Image.asset("assets/product-10.png"),
+                background: Image.network(image),
               ),
             ),
           ];
         },
+        body: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 10,
+                left: 10,
+                right: 10,
+              ),
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                brand,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "Details",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                description,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

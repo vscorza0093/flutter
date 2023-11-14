@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopping/pages/home.page.dart';
 import 'package:shopping/pages/signup.page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -79,7 +78,7 @@ class LoginPage extends StatelessWidget {
                         height: 40,
                       ),
                       TextFormField(
-                        autofocus: true,
+                        autofocus: false,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           labelText: "Email",
@@ -94,7 +93,7 @@ class LoginPage extends StatelessWidget {
                         height: 10,
                       ),
                       TextFormField(
-                        autofocus: true,
+                        autofocus: false,
                         keyboardType: TextInputType.text,
                         obscureText: true,
                         decoration: const InputDecoration(
@@ -124,14 +123,7 @@ class LoginPage extends StatelessWidget {
                         width: double.infinity,
                         height: 40,
                         child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          },
+                          onPressed: () {},
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: Colors.red,
