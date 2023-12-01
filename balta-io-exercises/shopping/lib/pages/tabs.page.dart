@@ -8,8 +8,8 @@ class TabsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: TabBarView(
+    return Scaffold(
+      body: const TabBarView(
         children: [
           HomePage(),
           CartPage(),
@@ -17,7 +17,7 @@ class TabsPage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: TabBar(
-        tabs: [
+        tabs: const [
           Tab(
             icon: Icon(Icons.home),
           ),
@@ -28,11 +28,11 @@ class TabsPage extends StatelessWidget {
             icon: Icon(Icons.perm_identity),
           ),
         ],
-        labelColor: Colors.blue,
+        labelColor: Theme.of(context).primaryColor, 
         unselectedLabelColor: Colors.black38,
         indicatorSize: TabBarIndicatorSize.label,
-        indicatorPadding: EdgeInsets.all(5),
-        indicatorColor: Colors.blue,
+        indicatorPadding: const EdgeInsets.all(5),
+        indicatorColor: Theme.of(context).primaryColor,
       ),
     );
   }

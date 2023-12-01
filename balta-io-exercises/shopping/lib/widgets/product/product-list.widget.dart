@@ -23,7 +23,11 @@ class _ProductListState extends State<ProductList> {
   }
 
   void loadData() async {
-    productList = await productRepository.getProductList();
+    try {
+      productList = await productRepository.getProductList();
+    } catch (e) {
+      print(e);
+    }
     setState(() {});
   }
 
@@ -43,15 +47,6 @@ class _ProductListState extends State<ProductList> {
             price: productList.products[index].productPrice.toDouble(),
           );
         },
-        // children: const [
-        //   ProductItem(
-        //     image: "assets/product-1.png",
-        //     title: "BeoPlay Speaker",
-        //     brand: "Bang and Olufsen",
-        //     description: "description",
-        //     price: 775,
-        //   ),
-        // ],
       ),
     );
   }
